@@ -1,0 +1,3739 @@
+Sure! Let’s break down your notes into a detailed and structured explanation of SQL, relational vs non-relational databases, and how SQL is used to work with relational databases.
+
+---
+
+## 🔹 What is SQL?
+
+**SQL** stands for **Structured Query Language**.
+It is a **domain-specific language** used to communicate with **relational databases**. SQL is the standard language for **managing and manipulating data** in relational database management systems (RDBMS).
+
+---
+
+## 🔹 What Can SQL Do?
+
+SQL is used for:
+
+1. **Creating** databases and tables (`CREATE`)
+2. **Inserting** data (`INSERT`)
+3. **Retrieving** data (`SELECT`)
+4. **Updating** data (`UPDATE`)
+5. **Deleting** data (`DELETE`)
+6. **Altering** structure (`ALTER`)
+7. **Controlling access** (`GRANT`, `REVOKE`)
+
+These operations are commonly grouped into:
+
+* **DML (Data Manipulation Language)** – SELECT, INSERT, UPDATE, DELETE
+* **DDL (Data Definition Language)** – CREATE, ALTER, DROP
+* **DCL (Data Control Language)** – GRANT, REVOKE
+* **TCL (Transaction Control Language)** – COMMIT, ROLLBACK, SAVEPOINT
+
+---
+
+## 🔹 Relational Databases
+
+### 🔸 Definition:
+
+A **relational database** is a type of database that stores data in **tables** (also called relations). Each table consists of:
+
+* **Rows (records/tuples)**
+* **Columns (fields/attributes)**
+
+Each table has a **primary key** (a unique identifier for each row), and can have **foreign keys** (used to link rows in different tables).
+
+### 🔸 Example:
+
+Let’s say we have a table named `Students`:
+
+| StudentID | Name    | Age | Department |
+| --------- | ------- | --- | ---------- |
+| 1         | Alice   | 20  | CS         |
+| 2         | Bob     | 21  | IT         |
+| 3         | Charlie | 22  | CS         |
+
+This table stores structured data about students.
+
+---
+
+## 🔹 Theory Behind Relational Databases (Relational Model)
+
+The relational model is based on **mathematical set theory and first-order predicate logic**. It was introduced by **Dr. E.F. Codd** in 1970.
+
+### Key Concepts:
+
+* **Relation**: A table with rows and columns.
+* **Tuple**: A row in a table.
+* **Attribute**: A column in a table.
+* **Domain**: A set of allowable values for an attribute.
+* **Keys**: Used to uniquely identify rows (primary key, candidate key, foreign key).
+* **Normalization**: A process to reduce redundancy and improve data integrity.
+
+---
+
+## 🔹 Non-Relational Databases (NoSQL)
+
+### 🔸 Definition:
+
+**Non-relational databases** do **not store data in tabular form**. Instead, they may use:
+
+* **Documents (e.g., MongoDB)**
+* **Key-value pairs (e.g., Redis)**
+* **Graphs (e.g., Neo4j)**
+* **Wide-column stores (e.g., Cassandra)**
+
+They are designed for:
+
+* High scalability
+* Unstructured or semi-structured data
+* Flexible schema
+
+### 🔸 Example (MongoDB Document):
+
+```json
+{
+  "StudentID": 1,
+  "Name": "Alice",
+  "Age": 20,
+  "Department": "CS"
+}
+```
+
+---
+
+## 🔹 SQL vs NoSQL Summary
+
+| Feature     | SQL (Relational)          | NoSQL (Non-Relational)       |
+| ----------- | ------------------------- | ---------------------------- |
+| Structure   | Tables (Rows & Columns)   | Documents, Key-Value, Graphs |
+| Schema      | Fixed (Structured)        | Flexible (Schema-less)       |
+| Language    | SQL                       | Varies (JSON, BSON, etc.)    |
+| Scalability | Vertical                  | Horizontal                   |
+| Examples    | MySQL, PostgreSQL, Oracle | MongoDB, Cassandra, Redis    |
+
+---
+
+
+
+
+
+
+                                      
+Creating a database in MySQL
+
+CREATE DATABASE KEDAR;   [CREATE DATABASE database_name]
+
+Using the databse
+
+USE KEDAR;
+
+To drop a database 
+
+DROP DATABASE KEDAR;
+
+To set database to read only
+
+ALTER DATABASE KEDAR READ ONLY = 1; //in read only mode you cant modify or delete but you can access so dropping database after setting to read only is not possible 
+to set to not read only mode , ALTER DATABASE KEDAR READ ONLY = 0;
+
+
+
+Creating tables in MySQL. Tables contain rows and columns , cloumns are specified while creating MySQL tables and rows are added later
+
+to create a table,
+
+CREATE TABLE table_name(schema_i.e_columns_with_datatypes);
+
+CREATE TABLE STUDENTS(SID INT,SNAME VARCHAR(30),SAGE INT);
+
+
+DATATYPES in MySQL
+
+Here's a complete list of **MySQL data types**, grouped by category, along with examples for each:
+
+---
+
+### 🟦 1. **Numeric Data Types**
+
+#### 🔹 Integer Types
+
+| Data Type          | Description                      | Example                        |
+| ------------------ | -------------------------------- | ------------------------------ |
+| `TINYINT`          | Very small integer (-128 to 127) | `TINYINT age = 25`             |
+| `SMALLINT`         | Small integer                    | `SMALLINT year = 2023`         |
+| `MEDIUMINT`        | Medium integer                   | `MEDIUMINT views = 100000`     |
+| `INT` or `INTEGER` | Standard integer                 | `INT id = 12345`               |
+| `BIGINT`           | Large integer                    | `BIGINT distance = 1234567890` |
+
+#### 🔹 Decimal Types
+
+| Data Type       | Description           | Example                      |
+| --------------- | --------------------- | ---------------------------- |
+| `DECIMAL(p, s)` | Fixed-point (exact)   | `DECIMAL(5,2) price = 99.99` |
+| `NUMERIC(p, s)` | Synonym for `DECIMAL` | `NUMERIC(6,2) rate = 45.67`  |
+
+#### 🔹 Floating-Point Types
+
+| Data Type                      | Description                     | Example               |
+| ------------------------------ | ------------------------------- | --------------------- |
+| `FLOAT(p)`                     | Single-precision floating-point | `FLOAT weight = 62.5` |
+| `DOUBLE` or `DOUBLE PRECISION` | Double-precision                | `DOUBLE temp = 98.76` |
+
+---
+
+### 🟩 2. **Date and Time Data Types**
+
+| Data Type   | Description                         | Example                 |
+| ----------- | ----------------------------------- | ----------------------- |
+| `DATE`      | Date (YYYY-MM-DD)                   | `'2025-05-04'`          |
+| `DATETIME`  | Date and time                       | `'2025-05-04 14:30:00'` |
+| `TIMESTAMP` | Unix timestamp (auto update option) | `'2025-05-04 14:30:00'` |
+| `TIME`      | Time only (HH\:MM\:SS)              | `'14:30:00'`            |
+| `YEAR`      | Year (4 digits)                     | `YEAR = 2025`           |
+
+---
+
+### 🟨 3. **String (Character) Data Types**
+
+| Data Type              | Description                          | Example                         |
+| ---------------------- | ------------------------------------ | ------------------------------- |
+| `CHAR(n)`              | Fixed-length string (0 to 255)       | `CHAR(5) code = 'AB123'`        |
+| `VARCHAR(n)`           | Variable-length string (0 to 65,535) | `VARCHAR(100) name = 'Kedar'`   |
+| `TEXT`                 | Large text (up to 65,535 characters) | `TEXT description = '...'`      |
+| `TINYTEXT`             | Max 255 characters                   | `TINYTEXT short_note = 'Hello'` |
+| `MEDIUMTEXT`           | Up to 16 MB of text                  | `MEDIUMTEXT article = '...'`    |
+| `LONGTEXT`             | Up to 4 GB of text                   | `LONGTEXT book = '...'`         |
+| `ENUM(val1, val2,...)` | Predefined list of values            | `ENUM('Male','Female') gender`  |
+| `SET(val1, val2,...)`  | Multiple values from predefined list | `SET('A','B','C') tags`         |
+
+---
+
+### 🟧 4. **Binary Data Types (for files/images/etc.)**
+
+| Data Type      | Description                 | Example                    |
+| -------------- | --------------------------- | -------------------------- |
+| `BINARY(n)`    | Fixed-length binary data    | `BINARY(16)`               |
+| `VARBINARY(n)` | Variable-length binary data | `VARBINARY(255)`           |
+| `TINYBLOB`     | Max 255 bytes               | `TINYBLOB image_thumbnail` |
+| `BLOB`         | Max 65 KB                   | `BLOB resume`              |
+| `MEDIUMBLOB`   | Max 16 MB                   | `MEDIUMBLOB large_file`    |
+| `LONGBLOB`     | Max 4 GB                    | `LONGBLOB video`           |
+
+---
+
+### 🟥 5. **Spatial Data Types (Advanced GIS support)**
+
+| Data Type         | Description              |
+| ----------------- | ------------------------ |
+| `GEOMETRY`        | Any spatial value        |
+| `POINT`           | A single location (X,Y)  |
+| `LINESTRING`      | A line (multiple points) |
+| `POLYGON`         | A shape (closed figure)  |
+| `MULTIPOINT`      | Collection of points     |
+| `MULTILINESTRING` | Collection of lines      |
+| `MULTIPOLYGON`    | Collection of polygons   |
+
+> Example: `POINT(12.34 56.78)`
+
+---
+
+### 🟪 6. **JSON Data Type (MySQL 5.7+)**
+
+| Data Type | Description                | Example                          |
+| --------- | -------------------------- | -------------------------------- |
+| `JSON`    | Stores JSON-formatted data | `'{"name": "Kedar", "age": 21}'` |
+
+---
+
+### ✅ Example Table:
+
+```sql
+CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    age TINYINT,
+    gender ENUM('Male', 'Female', 'Other'),
+    dob DATE,
+    email VARCHAR(255),
+    score DECIMAL(5,2),
+    registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+
+to retrive the table,
+
+SELECT * FROM table_name;  //This will show empty table if no values are inserted
+
+
+To rename the table,
+
+RENAME TABLE old_name TO new_name;
+
+
+TO drop the table,
+
+DROP TABLE table_name;
+
+
+To alter the table(adding more columns)
+
+ALTER TABLE students
+ADD PHONE_NUMBER VARCHAR(10);
+
+
+renaming the columns name
+
+ALTER TABLE students
+RENAME COLUMN PHONE_NUMBER TO Contact;
+
+
+Modifying datatype of a column 
+ALTER TABLE students
+MODIFY COLUMN Contact varchar(100)
+
+
+
+Moving columns around in the table
+
+ALTER TABLE tablename 
+MODIFY column_name datatype
+AFTER column1_name; 
+
+//This will place column_name after colum1_name MySQL doesn't support BEFORE
+
+
+
+ALTER TABLE tablename 
+MODIFY column_name datatype
+FIRST;
+
+Thsi will place that column in first pplace
+
+To drop a particular column from the tabe;
+
+ALTER TABLE table_name 
+DROP COLUMN column_name; 
+
+
+
+
+
+
+Creating a tabnle and inserting values in it
+
+CREATE TABLE STUDENTS(SID varchar(30),S_NAME VARCHAR(50),S_AGE INT,S_DEPARTMENT VARCHAR(30),S_marks DOUBLE);
+
+INSERT INTO STUDENTS VALUES ("T-22-0091","DAMALE KEDAR PRAVIN",20,"INFORMATION TECHNOLOGY",8.96);
+
+SELECT * FROM STUDENTS;
+
+
+Output:
+
++-----------+---------------------+-------+------------------------+---------+
+| SID       | S_NAME              | S_AGE | S_DEPARTMENT           | S_marks |
++-----------+---------------------+-------+------------------------+---------+
+| T-22-0091 | DAMALE KEDAR PRAVIN |    20 | INFORMATION TECHNOLOGY |    8.96 |
++-----------+---------------------+-------+------------------------+---------+
+
+
+
+
+
+Adding multiple values in one 
+syntax- INSERT INTO tablename VALUES (),(),(),(),();
+
+CREATE TABLE STUDENTS(SID varchar(30),S_NAME VARCHAR(50),S_AGE INT,S_DEPARTMENT VARCHAR(30),S_marks DOUBLE);
+
+INSERT INTO STUDENTS VALUES ("T-22-0091","DAMALE KEDAR PRAVIN",20,"INFORMATION TECHNOLOGY",8.96);
+
+INSERT INTO STUDENTS VALUES("T-22-0010","DHAMASKAR REHAN RIYAZ",20,"INFORMATION TECHNOLOGY",7.65),
+                           ("T-22-0910","KARMARKAR ANAND HARESH",20,"INFORMATION TECHNOLOGY",8.65);
+SELECT * FROM STUDENTS;
+
+
+Output:
+
++-----------+------------------------+-------+------------------------+---------+
+| SID       | S_NAME                 | S_AGE | S_DEPARTMENT           | S_marks |
++-----------+------------------------+-------+------------------------+---------+
+| T-22-0091 | DAMALE KEDAR PRAVIN    |    20 | INFORMATION TECHNOLOGY |    8.96 |
+| T-22-0010 | DHAMASKAR REHAN RIYAZ  |    20 | INFORMATION TECHNOLOGY |    7.65 |
+| T-22-0910 | KARMARKAR ANAND HARESH |    20 | INFORMATION TECHNOLOGY |    8.65 |
++-----------+------------------------+-------+------------------------+---------+
+
+
+INSERT INTO STUDENTS VALUES (4,"KEDAR","IT",8.96);
+
+This will throw error as there is a missing data, eroors will be thrown if 
+
+Missing Value:
+
+The STUDENTS table has 5 columns: SID, S_NAME, S_AGE, S_DEPARTMENT, S_marks.
+
+Your statement provides only 4 values, so yes, an error will occur due to the missing value (in this case, S_AGE or possibly SID, depending on your intended mapping).
+
+Data Type Mismatch:
+
+Assuming the first value 4 is meant for SID, it's an INT, but your SID column is defined as VARCHAR(30). This will work in some databases due to implicit casting, but is generally not ideal or safe.
+
+"IT" is a string, and using double quotes instead of single quotes may also cause a syntax error in most SQL dialects (e.g., MySQL, PostgreSQL).
+
+Field Length Violation:
+
+If the provided string exceeds the defined length (e.g., 51 characters for S_NAME), the database may truncate it or throw an error, depending on the RDBMS settings.
+
+
+
+
+To add data into specific columns, specify columns you want to add data after tablename i.e
+
+
+INSERT INTO STUDENTS(SID,S_NAME,S_DEPARTMENT) VALUES(4,"ADITYA","IT");
+
+
+The data that is not eneterd will be filled with null
+
+
+Output:
+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |    8.96 |
+|    2 | REHAN  |    20 | IT           |    7.65 |
+|    3 | ANAND  |    20 | IT           |    8.65 |
+|    4 | ADITYA |  NULL | IT           |    NULL |
++------+--------+-------+--------------+---------+
+
+
+SEELDCTING all i.e everything DATA FROM THE TABLE
+
+SELECT * FROM STUDENTS;                 
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |    8.96 |
+|    2 | REHAN  |    20 | IT           |    7.65 |
+|    3 | ANAND  |    20 | IT           |    8.65 |
+|    4 | ADITYA |  NULL | IT           |    NULL |
++------+--------+-------+--------------+---------+
+
+
+SElcting only column or columns
+
+SELECT SID,S_NAME FROM STUDENTS
++------+--------+
+| SID  | S_NAME |
++------+--------+
+|    1 | KEDAR  |
+|    2 | REHAN  |
+|    3 | ANAND  |
+|    4 | ADITYA |
++------+--------+
+
+You can select in any order just by shuffling columns around
+
+SELECT S_NAME,SID FROM STUDENTS;
+
++--------+------+
+| S_NAME | SID  |
++--------+------+
+| KEDAR  |    1 |
+| REHAN  |    2 |
+| ANAND  |    3 |
+| ADITYA |    4 |
++--------+------+
+
+
+SELECTING RECORDS THAT MEET OUR CONDITION USING WHERE CLAUSE
+
+
+
+SELECT * FROM STUDENTS 
+WHERE SID=1;
+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |    8.96 |
++------+--------+-------+--------------+---------+
+
+
+SELECT * FROM STUDENTS 
+WHERE S_NAME="KEDAR";
+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |    8.96 |
++------+--------+-------+--------------+---------+
+
+greter than operator
+
+SELECT * FROM STUDENTS 
+WHERE S_marks >=8.65;
+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |    8.96 |
+|    3 | ANAND  |    20 | IT           |    8.65 |
++------+--------+-------+--------------+---------+
+
+not operator
+
+SELECT SID,S_NAME from students
+where SID != 1;
+
+
+Output:
+
++------+--------+
+| SID  | S_NAME |
++------+--------+
+|    2 | REHAN  |
+|    3 | ANAND  |
+|    4 | ADITYA |
++------+--------+
+
+
+
+sELECTING NULL VALUES VIA IS OPERATOR INSTEAD OF =
+\
+
+SELECT * from students
+where S_age IS NULL;
+
+Output:
+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    4 | ADITYA |  NULL | IT           |    NULL |
++------+--------+-------+--------------+---------+
+
+
+SELECT * from students
+where S_age IS NOT NULL;
+
+SELECT * from students
+where S_age IS NOT NULL;
+
+
+
+updating AND DELETING DATA FROM THE TABLE 
+
+UPDATING DATA USING SET
+
+SELECT * FROM STUDENTS;
+
+
+UPDATE STUDENTS
+SET S_AGE=20
+WHERE S_AGE IS NULL;
+
+SELECT * FROM STUDENTS 
+
+Output:
+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |    8.96 |
+|    2 | REHAN  |    20 | IT           |    7.65 |
+|    3 | ANAND  |    20 | IT           |    8.65 |
+|    4 | ADITYA |  NULL | IT           |    NULL |
++------+--------+-------+--------------+---------+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |    8.96 |
+|    2 | REHAN  |    20 | IT           |    7.65 |
+|    3 | ANAND  |    20 | IT           |    8.65 |
+|    4 | ADITYA |    20 | IT           |    NULL |
++------+--------+-------+--------------+---------+
+
+IT WILL SEARCH FOR S_AGE BEING NULL IF FOUND THEN IT WILL UPDATE IT 
+
+
+CHANGING MULTIPLE FEEDS
+
+SELECT * FROM STUDENTS;
+
+
+UPDATE STUDENTS
+SET S_AGE=20,S_MARKS=8.00
+WHERE S_AGE IS NULL;
+
+SELECT * FROM STUDENTS 
+
+
+Output:
+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |    8.96 |
+|    2 | REHAN  |    20 | IT           |    7.65 |
+|    3 | ANAND  |    20 | IT           |    8.65 |
+|    4 | ADITYA |  NULL | IT           |    NULL |
++------+--------+-------+--------------+---------+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |    8.96 |
+|    2 | REHAN  |    20 | IT           |    7.65 |
+|    3 | ANAND  |    20 | IT           |    8.65 |
+|    4 | ADITYA |    20 | IT           |       8 |
++------+--------+-------+--------------+---------+
+
+
+tO SET  SOMETHING TO NULL SET COLUMN_NAME= NULL THATS IT
+
+
+tO UPDATE EVERY ROW JUST EXCULE WHERE CLAUSE
+
+SELECT * FROM STUDENTS;
+
+
+UPDATE STUDENTS
+SET S_AGE=20,S_MARKS=8.00;
+
+
+SELECT * FROM STUDENTS 
+
+Output:
+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |    8.96 |
+|    2 | REHAN  |    20 | IT           |    7.65 |
+|    3 | ANAND  |    20 | IT           |    8.65 |
+|    4 | ADITYA |  NULL | IT           |    NULL |
++------+--------+-------+--------------+---------+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |       8 |
+|    2 | REHAN  |    20 | IT           |       8 |
+|    3 | ANAND  |    20 | IT           |       8 |
+|    4 | ADITYA |    20 | IT           |       8 |
++------+--------+-------+--------------+---------+
+
+DELETING ROWS FROM TABLE
+
+DELETE FROM TABLE_NAME
+
+BUT IN REAL WOLRD SCENARIO YOU WONT BE DEELTING EVEYTHING FROM THE TABLE
+
+SO TO PICK USE WHERE CLUASE
+
+
+
+SELECT * FROM STUDENTS;
+
+DELETE FROM STUDENTS
+WHERE S_MARKS <=8; 
+
+SELECT * FROM STUDENTS;
+
+
+Output:
+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |    8.96 |
+|    2 | REHAN  |    20 | IT           |    7.65 |
+|    3 | ANAND  |    20 | IT           |    8.65 |
+|    4 | ADITYA |  NULL | IT           |    NULL |
++------+--------+-------+--------------+---------+
++------+--------+-------+--------------+---------+
+| SID  | S_NAME | S_AGE | S_DEPARTMENT | S_marks |
++------+--------+-------+--------------+---------+
+|    1 | KEDAR  |    20 | IT           |    8.96 |
+|    3 | ANAND  |    20 | IT           |    8.65 |
+|    4 | ADITYA |  NULL | IT           |    NULL |
++------+--------+-------+--------------+---------+
+
+
+TRANSACTION CONCEPT
+
+IN MYSQL ANY TRANSACTION IS IRREVERSIBLE BY DEFAULT BUT IF WE WANT TO USE ROLLBACK FUNCTIONALITY
+
+THEN FIRST SET AUTOCOOMIT TO OFF BY,
+
+SET AUTOCOMMIT = OFF;
+COMMIT;
+
+TRANSACTION 1
+COMMIT;
+
+TRANSACTION 2
+SOMETHINGS GOES WRONG I WANT TO ROLLBACK THEN,
+
+ROLLBACK;
+
+IT WILL GET THE DATABASE AS IT WAS DURING THE LATEST COMMIT IF YOU WANT TO GO FURTHER BACK YOU CAN EXECUITE MULTIPLE ROLLABCK ONE AFTER OTHERYour explanation is **partially correct** but **contains several misconceptions**. Let me explain the **correct transaction concept in MySQL** in detail.
+
+---
+
+### ✅ Correct Concepts
+
+1. **Transactions in MySQL**:
+
+   * A **transaction** is a sequence of SQL statements that are executed as a single unit of work.
+   * It either **completes entirely** (`COMMIT`) or **fails and undoes all changes** (`ROLLBACK`).
+   * Only **InnoDB** (and a few other) storage engines support transactions.
+
+2. **Autocommit Mode**:
+
+   * By **default**, MySQL runs in **autocommit mode**: every individual statement is automatically committed right after it's executed.
+   * To use transactions **manually**, you need to **disable autocommit**:
+
+     ```sql
+     SET AUTOCOMMIT = 0;
+     ```
+
+     OR
+
+     ```sql
+     START TRANSACTION;
+     ```
+
+3. **COMMIT and ROLLBACK**:
+
+   * After `START TRANSACTION` or `SET AUTOCOMMIT = 0`, changes will not be permanent until you `COMMIT`.
+   * If something goes wrong before committing, you can `ROLLBACK`, which **undoes all changes since the last transaction began**.
+
+4. **What ROLLBACK does**:
+
+   * It **only reverts the changes made in the current uncommitted transaction**.
+   * You **cannot go further back** by calling `ROLLBACK` multiple times. There is **no history stack** of previous transactions.
+
+---
+
+### ❌ Corrections to Your Statement
+
+| Your Statement                                           | Reality                                                                                                                                         |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| "ANY TRANSACTION IS IRREVERSIBLE BY DEFAULT"             | ❌ Incorrect. Transactions are **reversible** if not committed yet.                                                                              |
+| "SET AUTOCOMMIT = OFF; COMMIT;"                          | ❌ You don't need `COMMIT` after setting autocommit off. `SET AUTOCOMMIT = 0;` just disables auto-commits.                                       |
+| "ROLLBACK will return the database to the latest COMMIT" | ✅ Yes, **rollback undoes only uncommitted changes** made **since the last commit**.                                                             |
+| "You can execute multiple ROLLBACKs to go further back"  | ❌ Not true. Once a transaction is committed, **you cannot roll back to it**. There's no way to go back further than the last transaction start. |
+
+---
+
+### ✅ Correct Example
+
+```sql
+-- Turn off autocommit to start using manual transactions
+SET AUTOCOMMIT = 0;
+
+-- Begin Transaction 1
+INSERT INTO users VALUES (1, 'Alice');
+COMMIT;  -- This makes the insert permanent
+
+-- Begin Transaction 2
+INSERT INTO users VALUES (2, 'Bob');
+
+-- Something goes wrong
+ROLLBACK;  -- This undoes the insert of 'Bob'
+
+-- The database now contains only 'Alice'
+```
+
+---
+
+### Summary
+
+* ✅ You can **rollback only uncommitted changes**.
+* ❌ You **can't rollback multiple transactions** one after another like a stack.
+* ✅ You must **disable autocommit** to control commits and rollbacks manually.
+
+Would you like a visual flowchart to better understand transaction control in MySQL?
+
+
+TIME ENTRIS IN MYSQL
+
+CREATE TABLE TEST(DATE_COL DATE,TIME_COL TIME,DATETIME_COL DATETIME);
+
+INSERT INTO TEST VALUES(CURRENT_DATE(),CURRENT_TIME(),NOW());
+
+SELECT * FROM TEST
+
+
+Output:
+
++------------+----------+---------------------+
+| DATE_COL   | TIME_COL | DATETIME_COL        |
++------------+----------+---------------------+
+| 2025-05-04 | 10:54:37 | 2025-05-04 10:54:37 |
++------------+----------+---------------------+
+
+pUTTING DATE THAT ARE TOMMORROW OR SECONDS AWAYS FROM CURRENT 
+
+CREATE TABLE TEST(DATE_COL DATE,TIME_COL TIME,DATETIME_COL DATETIME);
+
+INSERT INTO TEST VALUES(CURRENT_DATE(),CURRENT_TIME(),NOW());
+
+INSERT INTO TEST VALUES(CURRENT_DATE()+1,CURRENT_TIME()+10,NOW()+10);
+
+SELECT * FROM TEST
+
++------------+----------+---------------------+
+| DATE_COL   | TIME_COL | DATETIME_COL        |
++------------+----------+---------------------+
+| 2025-05-04 | 10:56:25 | 2025-05-04 10:56:25 |
+| 2025-05-05 | 10:56:35 | 2025-05-04 10:56:35 |
++------------+----------+---------------------+
+
+ADDING CUTOM BY ENTRY
+
+CREATE TABLE TEST(DATE_COL DATE,TIME_COL TIME,DATETIME_COL DATETIME);
+
+INSERT INTO TEST VALUES(CURRENT_DATE(),CURRENT_TIME(),NOW());
+
+INSERT INTO TEST VALUES(CURRENT_DATE()+1,CURRENT_TIME()+10,NOW()+10);
+
+INSERT INTO TEST VALUES("2021-05-04","12:34:34","2021-05-04 12:34:34");
+
+
+SELECT * FROM TEST
+
+Output:
+
++------------+----------+---------------------+
+| DATE_COL   | TIME_COL | DATETIME_COL        |
++------------+----------+---------------------+
+| 2025-05-04 | 10:58:20 | 2025-05-04 10:58:20 |
+| 2025-05-05 | 10:58:30 | 2025-05-04 10:58:30 |
+| 2021-05-04 | 12:34:34 | 2021-05-04 12:34:34 |
++------------+----------+---------------------+
+
+
+UNIQUE CONSTRAINTS ENSURE THAT ALL VALUES IN COULMN ARE DIFFERENT THAN EACH OTHER
+
+
+THE CONSTRAINS ARE GIVEN AFTER THE DATATYPE AT THE CREATIO OF TABLE OFCURSE THEY CAN BE ADDED AFTERWORDS TOO,
+
+CREATE TABLE PRODUCTS(PID INT,PNAME VARCHAR(30) UNIQUE,PRICE DOUBLE);
+
+INSERT INTO PRODUCTS VALUES(1,"SHAMPOO",45.98);
+
+INSERT INTO PRODUCTS VALUES(2,"SHAMPOO",45.98);
+
+SELECT * FROM PRODUCTS;
+
+
+Output:
+
+ERROR 1062 (23000) at line 5: Duplicate entry 'SHAMPOO' for key 'products.PNAME'
+
+
+CREATE TABLE PRODUCTS(PID INT,PNAME VARCHAR(30) UNIQUE,PRICE DOUBLE);
+
+INSERT INTO PRODUCTS VALUES(1,"SHAMPOO",45.98);
+
+
+SELECT * FROM PRODUCTS;
+
+Output:
+
++------+---------+-------+
+| PID  | PNAME   | PRICE |
++------+---------+-------+
+|    1 | SHAMPOO | 45.98 |
++------+---------+-------+
+
+TO ADD UNIQUE CONSTRAINT
+
+ALTER TABLE PRODUCTS
+ADD CONSTRAINT 
+UNIQUE(PNAME,PID);
+
+
+If you try to add a UNIQUE constraint on a column (or set of columns) in a table that already contains duplicate values, the database will reject the operation and throw an error. This is because the UNIQUE constraint guarantees that all values in the specified column(s) must be distinct, and your existing data violates that rule.
+
+
+NOT NULL CONSTRAINT : VALUE SHOULNT BE NULL WORKS LIKE UNIQUE
+
+CREATE TABLE PRODUCTS(PID INT,PNAME VARCHAR(30) NOT NULL,PRICE DOUBLE);
+
+
+TO ALTER A TABLE AFTER THE CREATION,
+
+ALTER TABLE PRODUCTS
+MODIFY COLNAME VARCHAR(30) NOT NULL
+
+BY THIS WAY UNIQUE WOULD ALSO WORK BUT IS NOT RECOMMENDED 
+
+
+CHECK CONSTRAINT : SETS A CONDITION  AND WONT ALLOW ANYTINH THAT DOESNT MATCH THAT
+
+
+CREATE TABLE PRODUCTS(PID INT,PNAME VARCHAR(30) ,PRICE DOUBLE, CONSTRAINT CHECK_NAME CHECK(PRICE>=10) );
+
+
+
+
+INSERT INTO PRODUCTS VALUES(1,"MANGO",45);
+INSERT INTO PRODUCTS VALUES(2,"BANANA",56.98);
+INSERT INTO PRODUCTS VALUES(3,"KIVI",45);
+INSERT INTO PRODUCTS VALUES(4,"DRAGONFRUIT",9);
+
+SELECT * FROM PRODUCTS;
+
+Output:
+
+ERROR 3819 (HY000) at line 9: Check constraint 'CHECK_NAME' is violated.
+
+
+CREATE TABLE PRODUCTS(PID INT,PNAME VARCHAR(30) ,PRICE DOUBLE, CONSTRAINT CHECK_NAME CHECK(PRICE>=10) );
+
+
+
+
+INSERT INTO PRODUCTS VALUES(1,"MANGO",45);
+INSERT INTO PRODUCTS VALUES(2,"BANANA",56.98);
+INSERT INTO PRODUCTS VALUES(3,"KIVI",45);
+INSERT INTO PRODUCTS VALUES(4,"DRAGONFRUIT",99);
+
+SELECT * FROM PRODUCTS;
+
+Output:
+
++------+-------------+-------+
+| PID  | PNAME       | PRICE |
++------+-------------+-------+
+|    1 | MANGO       |    45 |
+|    2 | BANANA      | 56.98 |
+|    3 | KIVI        |    45 |
+|    4 | DRAGONFRUIT |    99 |
++------+-------------+-------+
+
+CONSTRAINT CHECK_NAME CHECK(CONDITION) 
+COL IN CONDITION SHOULD BE PRESENT AND CHECK_NAME IS THE NAME THAT WE ARE GIVING TO THAT CHECK WE CAN ALSO GIVE NAME TO OTHER CONTRAITS AS WELL
+
+
+
+ADDINGF CHECK AFTER TABLE CREATION
+
+CREATE TABLE PRODUCTS(PID INT,PNAME VARCHAR(30) ,PRICE DOUBLE);
+
+ALTER TABLE PRODUCTS
+ADD CONSTRAINT CHECK(PRICE>10);
+
+
+INSERT INTO PRODUCTS VALUES(1,"MANGO",45);
+INSERT INTO PRODUCTS VALUES(2,"BANANA",56.98);
+INSERT INTO PRODUCTS VALUES(3,"KIVI",45);
+INSERT INTO PRODUCTS VALUES(4,"DRAGONFRUIT",99);
+
+SELECT * FROM PRODUCTS;
+
+
+Output:
+
++------+-------------+-------+
+| PID  | PNAME       | PRICE |
++------+-------------+-------+
+|    1 | MANGO       |    45 |
+|    2 | BANANA      | 56.98 |
+|    3 | KIVI        |    45 |
+|    4 | DRAGONFRUIT |    99 |
++------+-------------+-------+
+
+
+ALTER TABLE PRODUCTS
+ADD CONSTRAINT CHECK_NAME CHECK(PRICE>10);
+
+THIS JUST ADDS NAME TO OUR CONSTRAINT
+
+
+
+TO DROP A CHECK CONSTRAINT
+
+ALTER TABLE PRODUCTS
+DROP CHECK CHECK_NAME;
+
+
+DEFAULT CONSTRAINT: SETS A DEFAULT ITEM FOR THE THINGS THAT VALUE WHICH SHOULDNT BE PROVIDED
+
+
+CREATE TABLE PRODUCTS(PID INT,PNAME VARCHAR(30) ,PRICE DOUBLE DEFAULT 0.00);
+
+
+ALERINGF AFTER THE TABLE CRATION 
+
+ALTER TABLE PRODUCTS
+ALTER CHECK PRICE SET DEFAULT 0;
+
+
+aS WE GAVE DEFAULT TO OUR COLUMN WE DONT NEED TO SPECIFY THE VALUE
+
+CREATE TABLE PRODUCTS(PID INT,PNAME VARCHAR(30) ,PRICE DOUBLE DEFAULT 0.00);
+
+
+
+
+INSERT INTO PRODUCTS VALUES(1,"MANGO");
+INSERT INTO PRODUCTS VALUES(2,"BANANA");
+INSERT INTO PRODUCTS VALUES(3,"KIVI");
+INSERT INTO PRODUCTS VALUES(4,"DRAGONFRUIT");
+
+SELECT * FROM PRODUCTS;
+
+ERROR 1136 (21S01) at line 6: Column count doesn't match value count at row 1
+
+
+THIS WILL GIVE ERROR AS THE COLUMN COUNT DOES NOT MATCH THE PASSED VALUES SO, 
+
+CREATE TABLE PRODUCTS(PID INT,PNAME VARCHAR(30) ,PRICE DOUBLE DEFAULT 0.00);
+
+
+
+
+INSERT INTO PRODUCTS(PID,PNAME) VALUES(1,"MANGO");
+INSERT INTO PRODUCTS(PID,PNAME) VALUES(2,"BANANA");
+INSERT INTO PRODUCTS(PID,PNAME) VALUES(3,"KIVI");
+INSERT INTO PRODUCTS(PID,PNAME) VALUES(4,"DRAGONFRUIT");
+
+SELECT * FROM PRODUCTS;
+
+
++------+-------------+-------+
+| PID  | PNAME       | PRICE |
++------+-------------+-------+
+|    1 | MANGO       |     0 |
+|    2 | BANANA      |     0 |
+|    3 | KIVI        |     0 |
+|    4 | DRAGONFRUIT |     0 |
++------+-------------+-------+
+
+
+AND IF WE WNAT SOMTHING TO NOT TAKE UP THE DEFAULT THEN SPECIFY COLUMN AND ADD THAT VALUE
+
+CREATE TABLE PRODUCTS(PID INT,PNAME VARCHAR(30) ,PRICE DOUBLE DEFAULT 0.00);
+
+
+
+
+INSERT INTO PRODUCTS(PID,PNAME) VALUES(1,"MANGO");
+INSERT INTO PRODUCTS(PID,PNAME) VALUES(2,"BANANA");
+INSERT INTO PRODUCTS(PID,PNAME) VALUES(3,"KIVI");
+INSERT INTO PRODUCTS(PID,PNAME,PRICE) VALUES(4,"DRAGONFRUIT",45);
+
+SELECT * FROM PRODUCTS;
+
+Output:
+
++------+-------------+-------+
+| PID  | PNAME       | PRICE |
++------+-------------+-------+
+|    1 | MANGO       |     0 |
+|    2 | BANANA      |     0 |
+|    3 | KIVI        |     0 |
+|    4 | DRAGONFRUIT |    45 |
++------+-------------+-------+
+
+
+
+Primary key constraint
+primary key is applied to a column fo which we want not null and uiniqye values it is typically used as a unique identifier eg. social security number, electricity bill number
+
+a table can have only one primary key
+
+
+
+
+create table fruits(fid int primary key,fname varchar(30));
+
+insert into fruits values(1,"Mango");
+insert into fruits values(1,"Mango");
+
+
+select * from fruits;
+
+ERROR 1062 (23000) at line 6: Duplicate entry '1' for key 'fruits.PRIMARY'
+
+
+as primary key constraint is violed by the duplicate
+
+
+
+create table fruits(fid int primary key,fname varchar(30));
+
+insert into fruits values(1,"Mango");
+insert into fruits values(2,"Mango");
+
+
+select * from fruits;
+Output:
+
++-----+-------+
+| fid | fname |
++-----+-------+
+|   1 | Mango |
+|   2 | Mango |
++-----+-------+
+
+this works as primary key is different
+
+adding primary key after creation
+
+alter table fruits 
+add constraint 
+primary key(fid)
+
+
+
+
+auto increment can be applied to primary key which will be increment along with new rows
+
+for eg 
+
+create table fruits(fid int primary key ,fname varchar(30));
+
+
+
+insert into fruits values(1,"Mango");
+insert into fruits values(2,"Apple");
+insert into fruits values(3,"WaterMelon");
+insert into fruits values(4,"MuskMelon");
+insert into fruits values(5,"Strawberry");
+insert into fruits values(6,"Apple");
+
+
+select * from fruits;
+
+Output:
+
++-----+------------+
+| fid | fname      |
++-----+------------+
+|   1 | Mango      |
+|   2 | Apple      |
+|   3 | WaterMelon |
+|   4 | MuskMelon  |
+|   5 | Strawberry |
+|   6 | Apple      |
++-----+------------+
+
+
+in this table we have to specify primary key at each row to eliminate that auto increment is used
+but you still have to specify all the columns other than key which is on auto_increment 
+
+CREATE TABLE fruits (
+    fid INT PRIMARY KEY AUTO_INCREMENT,
+    fname VARCHAR(30)
+);
+
+INSERT INTO fruits(fname) VALUES ("Mango");
+INSERT INTO fruits(fname) VALUES ("Apple");
+INSERT INTO fruits(fname) VALUES ("WaterMelon");
+INSERT INTO fruits(fname) VALUES ("MuskMelon");
+INSERT INTO fruits(fname) VALUES ("Strawberry");
+INSERT INTO fruits(fname) VALUES ("Apple");
+
+SELECT * FROM fruits;
+
+
+Output:
+
++-----+------------+
+| fid | fname      |
++-----+------------+
+|   1 | Mango      |
+|   2 | Apple      |
+|   3 | WaterMelon |
+|   4 | MuskMelon  |
+|   5 | Strawberry |
+|   6 | Apple      |
++-----+------------+
+
+To control auto increment to start from where we want ,
+
+CREATE TABLE fruits (
+    fid INT PRIMARY KEY AUTO_INCREMENT,
+    fname VARCHAR(30)
+);
+
+alter table fruits
+auto_increment=1000;
+
+INSERT INTO fruits(fname) VALUES ("Mango");
+INSERT INTO fruits(fname) VALUES ("Apple");
+INSERT INTO fruits(fname) VALUES ("WaterMelon");
+INSERT INTO fruits(fname) VALUES ("MuskMelon");
+INSERT INTO fruits(fname) VALUES ("Strawberry");
+INSERT INTO fruits(fname) VALUES ("Apple");
+
+SELECT * FROM fruits;
+
+Output:
+
++------+------------+
+| fid  | fname      |
++------+------------+
+| 1000 | Mango      |
+| 1001 | Apple      |
+| 1002 | WaterMelon |
+| 1003 | MuskMelon  |
+| 1004 | Strawberry |
+| 1005 | Apple      |
++------+------------+
+
+auto increment only works on integers if you give floats it will truncate to the integer
+
+
+
+foreign key constraint
+
+it is a key which is a primary key of a table which can be found in another table for joining(linking) purpose
+
+
+create table customers(
+  cid int primary key auto_increment,
+  cname varchar(30)
+);
+
+create table transactions(
+  tid int primary key auto_increment,
+  t_amount double,
+  customer_id int,
+  foreign key(customer_id) references customers(cid)
+);
+
+
+here we have set cid from customers as a foreign key in transactions table named customer_id
+
+create table customers(
+  cid int primary key auto_increment,
+  cname varchar(30)
+);
+
+create table transactions(
+  tid int primary key auto_increment,
+  t_amount double,
+  customer_id int,
+  foreign key(customer_id) references customers(cid)
+);
+
+INSERT INTO customers (cname) VALUES 
+('Alice'),
+('Bob'),
+('Charlie'),
+('Diana'),
+('Ethan');
+
+
+INSERT INTO transactions (t_amount, customer_id) VALUES 
+(250.75, 1),  -- Alice
+(100.00, 2),  -- Bob
+(320.50, 1),  -- Alice again
+(500.00, 3),  -- Charlie
+(75.25, 4),   -- Diana
+(200.00, 5),  -- Ethan
+(90.00, 2);   -- Bob again
+
+
+select * from customers;
+select * from transactions;
+
+Output:
+
++-----+---------+
+| cid | cname   |               
++-----+---------+
+|   1 | Alice   |
+|   2 | Bob     |
+|   3 | Charlie |
+|   4 | Diana   |
+|   5 | Ethan   |
++-----+---------+
++-----+----------+-------------+
+| tid | t_amount | customer_id |
++-----+----------+-------------+
+|   1 |   250.75 |           1 |
+|   2 |      100 |           2 |
+|   3 |    320.5 |           1 |
+|   4 |      500 |           3 |
+|   5 |    75.25 |           4 |
+|   6 |      200 |           5 |
+|   7 |       90 |           2 |
++-----+----------+-------------+
+
+alter table transactions 
+add constraint fk_customerid foreign key(customerid) references customers(cid);
+
+
+here fk_customerid is name of that foreign key which is used to drop the foreign key
+
+alter table transactions 
+drop foreign key fk_customerid;
+
+Foreign key also provides security by not executing actions that may destroy that link, such as deleting or updating a referenced record in the parent table that is still being used by a record in the child table.
+
+This ensures referential integrity, meaning the relationships between tables remain consistent and valid.
+
+16. joins
+
+join is a cluse that is used to combine rows from two or more tables based on a relatred column (foreign key)
+
+Note: to set auto increment you have to give it in alter table command it cant be set in table creation
+
+lets create some tables
+
+create table customers(
+  cid int primary key auto_increment,
+  cname varchar(30) not null 
+);
+
+create table transactions(
+  tid int primary key auto_increment,
+  t_amount double not null,
+  cid int,
+  foreign key(cid) references customers(cid)
+);
+
+alter table transactions
+auto_increment=1000;
+
+INSERT INTO customers(cname) VALUES
+('Kedar'),
+('Pravin'),
+('Priya'),
+('Kanchan'),
+('Sugandha'),
+('Ankit'),
+('Meera'),
+('Rohan'),
+('Sneha'),
+('Aarav'),
+('Divya'),
+('Neha'),
+('Yash'),
+('Tanvi'),
+('Kabir'),
+('Mia');
+
+
+INSERT INTO transactions(t_amount, cid) VALUES
+(3000,1),(200,1),(987,4),(20,5),(1234,null),(2345,5),(23987,3),
+(560,6),(4321,null),(1250,8),(777,9),(845,10),
+(659,11),(1222,12),(3333,13),(1444,14),(2399,15),
+(100,6),(299,6),(759,7),(892,8),(1400,null),
+(2255,10),(3020,11),(419,12),(1800,13),(2650,14),
+(3999,15),(1200,1),(1570,2),(188,3),(2000,4),
+(415,5),(799,6),(910,7),(1020,8),(233,9),
+(744,10),(645,null),(888,12),(999,13),(1750,14),
+(3010,15),(450,1),(875,null),(990,3),(120,4),
+(310,5),(890,6),(560,7),(610,8),(470,null);
+
+
+select * from customers;
+select * from transactions;
+
+Output:
+
++-----+----------+
+| cid | cname    |
++-----+----------+
+|   1 | Kedar    |
+|   2 | Pravin   |
+|   3 | Priya    |
+|   4 | Kanchan  |
+|   5 | Sugandha |
+|   6 | Ankit    |
+|   7 | Meera    |
+|   8 | Rohan    |
+|   9 | Sneha    |
+|  10 | Aarav    |
+|  11 | Divya    |
+|  12 | Neha     |
+|  13 | Yash     |
+|  14 | Tanvi    |
+|  15 | Kabir    |
+|  16 | Mia      |
++-----+----------+
++------+----------+------+
+| tid  | t_amount | cid  |
++------+----------+------+
+| 1000 |     3000 |    1 |
+| 1001 |      200 |    1 |
+| 1002 |      987 |    4 |
+| 1003 |       20 |    5 |
+| 1004 |     1234 | NULL |
+| 1005 |     2345 |    5 |
+| 1006 |    23987 |    3 |
+| 1007 |      560 |    6 |
+| 1008 |     4321 | NULL |
+| 1009 |     1250 |    8 |
+| 1010 |      777 |    9 |
+| 1011 |      845 |   10 |
+| 1012 |      659 |   11 |
+| 1013 |     1222 |   12 |
+| 1014 |     3333 |   13 |
+| 1015 |     1444 |   14 |
+| 1016 |     2399 |   15 |
+| 1017 |      100 |    6 |
+| 1018 |      299 |    6 |
+| 1019 |      759 |    7 |
+| 1020 |      892 |    8 |
+| 1021 |     1400 | NULL |
+| 1022 |     2255 |   10 |
+| 1023 |     3020 |   11 |
+| 1024 |      419 |   12 |
+| 1025 |     1800 |   13 |
+| 1026 |     2650 |   14 |
+| 1027 |     3999 |   15 |
+| 1028 |     1200 |    1 |
+| 1029 |     1570 |    2 |
+| 1030 |      188 |    3 |
+| 1031 |     2000 |    4 |
+| 1032 |      415 |    5 |
+| 1033 |      799 |    6 |
+| 1034 |      910 |    7 |
+| 1035 |     1020 |    8 |
+| 1036 |      233 |    9 |
+| 1037 |      744 |   10 |
+| 1038 |      645 | NULL |
+| 1039 |      888 |   12 |
+| 1040 |      999 |   13 |
+| 1041 |     1750 |   14 |
+| 1042 |     3010 |   15 |
+| 1043 |      450 |    1 |
+| 1044 |      875 | NULL |
+| 1045 |      990 |    3 |
+| 1046 |      120 |    4 |
+| 1047 |      310 |    5 |
+| 1048 |      890 |    6 |
+| 1049 |      560 |    7 |
+| 1050 |      610 |    8 |
+| 1051 |      470 | NULL |
++------+----------+------+
+
+
+Type 1: inner join inner join gives us the common elements between the two tables
+
+select * 
+from transactions inner join customers
+on transactions.cid = customers.cid;
+
+
+here reansactions is left table and customers in right table and join happend on foreign key 
+inner join will return the comman elemrnts that are present in both tables basically so all the null values will be deleted potentially
+
+Output:
+
++------+----------+------+-----+----------+
+| tid  | t_amount | cid  | cid | cname    |
++------+----------+------+-----+----------+
+| 1000 |     3000 |    1 |   1 | Kedar    |
+| 1001 |      200 |    1 |   1 | Kedar    |
+| 1028 |     1200 |    1 |   1 | Kedar    |
+| 1043 |      450 |    1 |   1 | Kedar    |
+| 1029 |     1570 |    2 |   2 | Pravin   |
+| 1006 |    23987 |    3 |   3 | Priya    |
+| 1030 |      188 |    3 |   3 | Priya    |
+| 1045 |      990 |    3 |   3 | Priya    |
+| 1002 |      987 |    4 |   4 | Kanchan  |
+| 1031 |     2000 |    4 |   4 | Kanchan  |
+| 1046 |      120 |    4 |   4 | Kanchan  |
+| 1003 |       20 |    5 |   5 | Sugandha |
+| 1005 |     2345 |    5 |   5 | Sugandha |
+| 1032 |      415 |    5 |   5 | Sugandha |
+| 1047 |      310 |    5 |   5 | Sugandha |
+| 1007 |      560 |    6 |   6 | Ankit    |
+| 1017 |      100 |    6 |   6 | Ankit    |
+| 1018 |      299 |    6 |   6 | Ankit    |
+| 1033 |      799 |    6 |   6 | Ankit    |
+| 1048 |      890 |    6 |   6 | Ankit    |
+| 1019 |      759 |    7 |   7 | Meera    |
+| 1034 |      910 |    7 |   7 | Meera    |
+| 1049 |      560 |    7 |   7 | Meera    |
+| 1009 |     1250 |    8 |   8 | Rohan    |
+| 1020 |      892 |    8 |   8 | Rohan    |
+| 1035 |     1020 |    8 |   8 | Rohan    |
+| 1050 |      610 |    8 |   8 | Rohan    |
+| 1010 |      777 |    9 |   9 | Sneha    |
+| 1036 |      233 |    9 |   9 | Sneha    |
+| 1011 |      845 |   10 |  10 | Aarav    |
+| 1022 |     2255 |   10 |  10 | Aarav    |
+| 1037 |      744 |   10 |  10 | Aarav    |
+| 1012 |      659 |   11 |  11 | Divya    |
+| 1023 |     3020 |   11 |  11 | Divya    |
+| 1013 |     1222 |   12 |  12 | Neha     |
+| 1024 |      419 |   12 |  12 | Neha     |
+| 1039 |      888 |   12 |  12 | Neha     |
+| 1014 |     3333 |   13 |  13 | Yash     |
+| 1025 |     1800 |   13 |  13 | Yash     |
+| 1040 |      999 |   13 |  13 | Yash     |
+| 1015 |     1444 |   14 |  14 | Tanvi    |
+| 1026 |     2650 |   14 |  14 | Tanvi    |
+| 1041 |     1750 |   14 |  14 | Tanvi    |
+| 1016 |     2399 |   15 |  15 | Kabir    |
+| 1027 |     3999 |   15 |  15 | Kabir    |
+| 1042 |     3010 |   15 |  15 | Kabir    |
++------+----------+------+-----+----------+
+
+Instead of * we can return what ever columns taht we actually want
+
+select tid, t_amount, cname 
+from transactions as t inner join customers as c
+on t.cid = c.cid;
+
+the same quer can be written as 
+
+select * 
+from transactions as t inner join customers as c
+on t.cid = c.cid;
+
+where we create aliases of the tablename so that we dont have to write tablnames agin and again
+
+
+2.outer join:
+	1.Left outer join : display everything on the left of the table corresponding to common elements i.e if an element in not in right table it will be null value in out output
+
+
+select *
+from transactions as t left join customers as c
+on t.cid = c.cid;
+
+Output:
+
++------+----------+------+------+----------+
+| tid  | t_amount | cid  | cid  | cname    |
++------+----------+------+------+----------+
+| 1000 |     3000 |    1 |    1 | Kedar    |
+| 1001 |      200 |    1 |    1 | Kedar    |
+| 1002 |      987 |    4 |    4 | Kanchan  |
+| 1003 |       20 |    5 |    5 | Sugandha |
+| 1004 |     1234 | NULL | NULL | NULL     |
+| 1005 |     2345 |    5 |    5 | Sugandha |
+| 1006 |    23987 |    3 |    3 | Priya    |
+| 1007 |      560 |    6 |    6 | Ankit    |
+| 1008 |     4321 | NULL | NULL | NULL     |
+| 1009 |     1250 |    8 |    8 | Rohan    |
+| 1010 |      777 |    9 |    9 | Sneha    |
+| 1011 |      845 |   10 |   10 | Aarav    |
+| 1012 |      659 |   11 |   11 | Divya    |
+| 1013 |     1222 |   12 |   12 | Neha     |
+| 1014 |     3333 |   13 |   13 | Yash     |
+| 1015 |     1444 |   14 |   14 | Tanvi    |
+| 1016 |     2399 |   15 |   15 | Kabir    |
+| 1017 |      100 |    6 |    6 | Ankit    |
+| 1018 |      299 |    6 |    6 | Ankit    |
+| 1019 |      759 |    7 |    7 | Meera    |
+| 1020 |      892 |    8 |    8 | Rohan    |
+| 1021 |     1400 | NULL | NULL | NULL     |
+| 1022 |     2255 |   10 |   10 | Aarav    |
+| 1023 |     3020 |   11 |   11 | Divya    |
+| 1024 |      419 |   12 |   12 | Neha     |
+| 1025 |     1800 |   13 |   13 | Yash     |
+| 1026 |     2650 |   14 |   14 | Tanvi    |
+| 1027 |     3999 |   15 |   15 | Kabir    |
+| 1028 |     1200 |    1 |    1 | Kedar    |
+| 1029 |     1570 |    2 |    2 | Pravin   |
+| 1030 |      188 |    3 |    3 | Priya    |
+| 1031 |     2000 |    4 |    4 | Kanchan  |
+| 1032 |      415 |    5 |    5 | Sugandha |
+| 1033 |      799 |    6 |    6 | Ankit    |
+| 1034 |      910 |    7 |    7 | Meera    |
+| 1035 |     1020 |    8 |    8 | Rohan    |
+| 1036 |      233 |    9 |    9 | Sneha    |
+| 1037 |      744 |   10 |   10 | Aarav    |
+| 1038 |      645 | NULL | NULL | NULL     |
+| 1039 |      888 |   12 |   12 | Neha     |
+| 1040 |      999 |   13 |   13 | Yash     |
+| 1041 |     1750 |   14 |   14 | Tanvi    |
+| 1042 |     3010 |   15 |   15 | Kabir    |
+| 1043 |      450 |    1 |    1 | Kedar    |
+| 1044 |      875 | NULL | NULL | NULL     |
+| 1045 |      990 |    3 |    3 | Priya    |
+| 1046 |      120 |    4 |    4 | Kanchan  |
+| 1047 |      310 |    5 |    5 | Sugandha |
+| 1048 |      890 |    6 |    6 | Ankit    |
+| 1049 |      560 |    7 |    7 | Meera    |
+| 1050 |      610 |    8 |    8 | Rohan    |
+| 1051 |      470 | NULL | NULL | NULL     |
++------+----------+------+------+----------+
+
+
+
+right join:
+
+display everything on the right corresponding to common elemnts if there is no match left values will be null 
+
+select *
+from transactions as t right join customers as c
+on t.cid = c.cid;
+
+
+Output:
+
++------+----------+------+-----+----------+
+| tid  | t_amount | cid  | cid | cname    |
++------+----------+------+-----+----------+
+| 1000 |     3000 |    1 |   1 | Kedar    |
+| 1001 |      200 |    1 |   1 | Kedar    |
+| 1028 |     1200 |    1 |   1 | Kedar    |
+| 1043 |      450 |    1 |   1 | Kedar    |
+| 1029 |     1570 |    2 |   2 | Pravin   |
+| 1006 |    23987 |    3 |   3 | Priya    |
+| 1030 |      188 |    3 |   3 | Priya    |
+| 1045 |      990 |    3 |   3 | Priya    |
+| 1002 |      987 |    4 |   4 | Kanchan  |
+| 1031 |     2000 |    4 |   4 | Kanchan  |
+| 1046 |      120 |    4 |   4 | Kanchan  |
+| 1003 |       20 |    5 |   5 | Sugandha |
+| 1005 |     2345 |    5 |   5 | Sugandha |
+| 1032 |      415 |    5 |   5 | Sugandha |
+| 1047 |      310 |    5 |   5 | Sugandha |
+| 1007 |      560 |    6 |   6 | Ankit    |
+| 1017 |      100 |    6 |   6 | Ankit    |
+| 1018 |      299 |    6 |   6 | Ankit    |
+| 1033 |      799 |    6 |   6 | Ankit    |
+| 1048 |      890 |    6 |   6 | Ankit    |
+| 1019 |      759 |    7 |   7 | Meera    |
+| 1034 |      910 |    7 |   7 | Meera    |
+| 1049 |      560 |    7 |   7 | Meera    |
+| 1009 |     1250 |    8 |   8 | Rohan    |
+| 1020 |      892 |    8 |   8 | Rohan    |
+| 1035 |     1020 |    8 |   8 | Rohan    |
+| 1050 |      610 |    8 |   8 | Rohan    |
+| 1010 |      777 |    9 |   9 | Sneha    |
+| 1036 |      233 |    9 |   9 | Sneha    |
+| 1011 |      845 |   10 |  10 | Aarav    |
+| 1022 |     2255 |   10 |  10 | Aarav    |
+| 1037 |      744 |   10 |  10 | Aarav    |
+| 1012 |      659 |   11 |  11 | Divya    |
+| 1023 |     3020 |   11 |  11 | Divya    |
+| 1013 |     1222 |   12 |  12 | Neha     |
+| 1024 |      419 |   12 |  12 | Neha     |
+| 1039 |      888 |   12 |  12 | Neha     |
+| 1014 |     3333 |   13 |  13 | Yash     |
+| 1025 |     1800 |   13 |  13 | Yash     |
+| 1040 |      999 |   13 |  13 | Yash     |
+| 1015 |     1444 |   14 |  14 | Tanvi    |
+| 1026 |     2650 |   14 |  14 | Tanvi    |
+| 1041 |     1750 |   14 |  14 | Tanvi    |
+| 1016 |     2399 |   15 |  15 | Kabir    |
+| 1027 |     3999 |   15 |  15 | Kabir    |
+| 1042 |     3010 |   15 |  15 | Kabir    |
+| NULL |     NULL | NULL |  16 | Mia      |
++------+----------+------+-----+----------+
+
+| NULL |     NULL | NULL |  16 | Mia      |
+
+mia has not made any transaction therefore her transactions are null because it a right join in left join mia wasn't included as it is not in common nor on the left trable
+
+
+
+select *
+from transactions as t right join customers as c
+on t.cid = c.cid;
+
+
+this query can eb written as 
+
+select *
+from transactions as t right outer join customers as c
+on t.cid = c.cid;
+
+as right join and right outer join are same 
+
+
+
+cross join: 
+Returns cartesian product — all combinations of rows.If tableA has 3 rows and tableB has 4, result = 3 × 4 = 12 rows.
+A CROSS JOIN does not require a key or condition to match rows (unlike INNER or OUTER JOINs).
+
+
+select *
+from transactions as t cross join customers as c;
+
+
+Output:
+
++------+----------+------+-----+----------+
+| tid  | t_amount | cid  | cid | cname    |
++------+----------+------+-----+----------+
+| 1000 |     3000 |    1 |  16 | Mia      |
+| 1000 |     3000 |    1 |  15 | Kabir    |
+| 1000 |     3000 |    1 |  14 | Tanvi    |
+| 1000 |     3000 |    1 |  13 | Yash     |
+| 1000 |     3000 |    1 |  12 | Neha     |
+| 1000 |     3000 |    1 |  11 | Divya    |
+| 1000 |     3000 |    1 |  10 | Aarav    |
+| 1000 |     3000 |    1 |   9 | Sneha    |
+| 1000 |     3000 |    1 |   8 | Rohan    |
+| 1000 |     3000 |    1 |   7 | Meera    |
+| 1000 |     3000 |    1 |   6 | Ankit    |
+| 1000 |     3000 |    1 |   5 | Sugandha |
+| 1000 |     3000 |    1 |   4 | Kanchan  |
+| 1000 |     3000 |    1 |   3 | Priya    |
+| 1000 |     3000 |    1 |   2 | Pravin   |
+| 1000 |     3000 |    1 |   1 | Kedar    |
+| 1001 |      200 |    1 |  16 | Mia      |
+| 1001 |      200 |    1 |  15 | Kabir    |
+| 1001 |      200 |    1 |  14 | Tanvi    |
+| 1001 |      200 |    1 |  13 | Yash     |
+| 1001 |      200 |    1 |  12 | Neha     |
+| 1001 |      200 |    1 |  11 | Divya    |
+| 1001 |      200 |    1 |  10 | Aarav    |
+| 1001 |      200 |    1 |   9 | Sneha    |
+| 1001 |      200 |    1 |   8 | Rohan    |
+| 1001 |      200 |    1 |   7 | Meera    |
+| 1001 |      200 |    1 |   6 | Ankit    |
+| 1001 |      200 |    1 |   5 | Sugandha |
+| 1001 |      200 |    1 |   4 | Kanchan  |
+| 1001 |      200 |    1 |   3 | Priya    |
+| 1001 |      200 |    1 |   2 | Pravin   |
+| 1001 |      200 |    1 |   1 | Kedar    |
+| 1002 |      987 |    4 |  16 | Mia      |
+| 1002 |      987 |    4 |  15 | Kabir    |
+| 1002 |      987 |    4 |  14 | Tanvi    |
+| 1002 |      987 |    4 |  13 | Yash     |
+| 1002 |      987 |    4 |  12 | Neha     |
+| 1002 |      987 |    4 |  11 | Divya    |
+| 1002 |      987 |    4 |  10 | Aarav    |
+| 1002 |      987 |    4 |   9 | Sneha    |
+| 1002 |      987 |    4 |   8 | Rohan    |
+| 1002 |      987 |    4 |   7 | Meera    |
+| 1002 |      987 |    4 |   6 | Ankit    |
+| 1002 |      987 |    4 |   5 | Sugandha |
+| 1002 |      987 |    4 |   4 | Kanchan  |
+| 1002 |      987 |    4 |   3 | Priya    |
+| 1002 |      987 |    4 |   2 | Pravin   |
+| 1002 |      987 |    4 |   1 | Kedar    |
+| 1003 |       20 |    5 |  16 | Mia      |
+| 1003 |       20 |    5 |  15 | Kabir    |
+| 1003 |       20 |    5 |  14 | Tanvi    |
+| 1003 |       20 |    5 |  13 | Yash     |
+| 1003 |       20 |    5 |  12 | Neha     |
+| 1003 |       20 |    5 |  11 | Divya    |
+| 1003 |       20 |    5 |  10 | Aarav    |
+| 1003 |       20 |    5 |   9 | Sneha    |
+| 1003 |       20 |    5 |   8 | Rohan    |
+| 1003 |       20 |    5 |   7 | Meera    |
+| 1003 |       20 |    5 |   6 | Ankit    |
+| 1003 |       20 |    5 |   5 | Sugandha |
+| 1003 |       20 |    5 |   4 | Kanchan  |
+| 1003 |       20 |    5 |   3 | Priya    |
+| 1003 |       20 |    5 |   2 | Pravin   |
+| 1003 |       20 |    5 |   1 | Kedar    |
+| 1004 |     1234 | NULL |  16 | Mia      |
+| 1004 |     1234 | NULL |  15 | Kabir    |
+| 1004 |     1234 | NULL |  14 | Tanvi    |
+| 1004 |     1234 | NULL |  13 | Yash     |
+| 1004 |     1234 | NULL |  12 | Neha     |
+| 1004 |     1234 | NULL |  11 | Divya    |
+| 1004 |     1234 | NULL |  10 | Aarav    |
+| 1004 |     1234 | NULL |   9 | Sneha    |
+| 1004 |     1234 | NULL |   8 | Rohan    |
+| 1004 |     1234 | NULL |   7 | Meera    |
+| 1004 |     1234 | NULL |   6 | Ankit    |
+| 1004 |     1234 | NULL |   5 | Sugandha |
+| 1004 |     1234 | NULL |   4 | Kanchan  |
+| 1004 |     1234 | NULL |   3 | Priya    |
+| 1004 |     1234 | NULL |   2 | Pravin   |
+| 1004 |     1234 | NULL |   1 | Kedar    |
+| 1005 |     2345 |    5 |  16 | Mia      |
+| 1005 |     2345 |    5 |  15 | Kabir    |
+| 1005 |     2345 |    5 |  14 | Tanvi    |
+| 1005 |     2345 |    5 |  13 | Yash     |
+| 1005 |     2345 |    5 |  12 | Neha     |
+| 1005 |     2345 |    5 |  11 | Divya    |
+| 1005 |     2345 |    5 |  10 | Aarav    |
+| 1005 |     2345 |    5 |   9 | Sneha    |
+| 1005 |     2345 |    5 |   8 | Rohan    |
+| 1005 |     2345 |    5 |   7 | Meera    |
+| 1005 |     2345 |    5 |   6 | Ankit    |
+| 1005 |     2345 |    5 |   5 | Sugandha |
+| 1005 |     2345 |    5 |   4 | Kanchan  |
+| 1005 |     2345 |    5 |   3 | Priya    |
+| 1005 |     2345 |    5 |   2 | Pravin   |
+| 1005 |     2345 |    5 |   1 | Kedar    |
+| 1006 |    23987 |    3 |  16 | Mia      |
+| 1006 |    23987 |    3 |  15 | Kabir    |
+| 1006 |    23987 |    3 |  14 | Tanvi    |
+| 1006 |    23987 |    3 |  13 | Yash     |
+| 1006 |    23987 |    3 |  12 | Neha     |
+| 1006 |    23987 |    3 |  11 | Divya    |
+| 1006 |    23987 |    3 |  10 | Aarav    |
+| 1006 |    23987 |    3 |   9 | Sneha    |
+| 1006 |    23987 |    3 |   8 | Rohan    |
+| 1006 |    23987 |    3 |   7 | Meera    |
+| 1006 |    23987 |    3 |   6 | Ankit    |
+| 1006 |    23987 |    3 |   5 | Sugandha |
+| 1006 |    23987 |    3 |   4 | Kanchan  |
+| 1006 |    23987 |    3 |   3 | Priya    |
+| 1006 |    23987 |    3 |   2 | Pravin   |
+| 1006 |    23987 |    3 |   1 | Kedar    |
+| 1007 |      560 |    6 |  16 | Mia      |
+| 1007 |      560 |    6 |  15 | Kabir    |
+| 1007 |      560 |    6 |  14 | Tanvi    |
+| 1007 |      560 |    6 |  13 | Yash     |
+| 1007 |      560 |    6 |  12 | Neha     |
+| 1007 |      560 |    6 |  11 | Divya    |
+| 1007 |      560 |    6 |  10 | Aarav    |
+| 1007 |      560 |    6 |   9 | Sneha    |
+| 1007 |      560 |    6 |   8 | Rohan    |
+| 1007 |      560 |    6 |   7 | Meera    |
+| 1007 |      560 |    6 |   6 | Ankit    |
+| 1007 |      560 |    6 |   5 | Sugandha |
+| 1007 |      560 |    6 |   4 | Kanchan  |
+| 1007 |      560 |    6 |   3 | Priya    |
+| 1007 |      560 |    6 |   2 | Pravin   |
+| 1007 |      560 |    6 |   1 | Kedar    |
+| 1008 |     4321 | NULL |  16 | Mia      |
+| 1008 |     4321 | NULL |  15 | Kabir    |
+| 1008 |     4321 | NULL |  14 | Tanvi    |
+| 1008 |     4321 | NULL |  13 | Yash     |
+| 1008 |     4321 | NULL |  12 | Neha     |
+| 1008 |     4321 | NULL |  11 | Divya    |
+| 1008 |     4321 | NULL |  10 | Aarav    |
+| 1008 |     4321 | NULL |   9 | Sneha    |
+| 1008 |     4321 | NULL |   8 | Rohan    |
+| 1008 |     4321 | NULL |   7 | Meera    |
+| 1008 |     4321 | NULL |   6 | Ankit    |
+| 1008 |     4321 | NULL |   5 | Sugandha |
+| 1008 |     4321 | NULL |   4 | Kanchan  |
+| 1008 |     4321 | NULL |   3 | Priya    |
+| 1008 |     4321 | NULL |   2 | Pravin   |
+| 1008 |     4321 | NULL |   1 | Kedar    |
+| 1009 |     1250 |    8 |  16 | Mia      |
+| 1009 |     1250 |    8 |  15 | Kabir    |
+| 1009 |     1250 |    8 |  14 | Tanvi    |
+| 1009 |     1250 |    8 |  13 | Yash     |
+| 1009 |     1250 |    8 |  12 | Neha     |
+| 1009 |     1250 |    8 |  11 | Divya    |
+| 1009 |     1250 |    8 |  10 | Aarav    |
+| 1009 |     1250 |    8 |   9 | Sneha    |
+| 1009 |     1250 |    8 |   8 | Rohan    |
+| 1009 |     1250 |    8 |   7 | Meera    |
+| 1009 |     1250 |    8 |   6 | Ankit    |
+| 1009 |     1250 |    8 |   5 | Sugandha |
+| 1009 |     1250 |    8 |   4 | Kanchan  |
+| 1009 |     1250 |    8 |   3 | Priya    |
+| 1009 |     1250 |    8 |   2 | Pravin   |
+| 1009 |     1250 |    8 |   1 | Kedar    |
+| 1010 |      777 |    9 |  16 | Mia      |
+| 1010 |      777 |    9 |  15 | Kabir    |
+| 1010 |      777 |    9 |  14 | Tanvi    |
+| 1010 |      777 |    9 |  13 | Yash     |
+| 1010 |      777 |    9 |  12 | Neha     |
+| 1010 |      777 |    9 |  11 | Divya    |
+| 1010 |      777 |    9 |  10 | Aarav    |
+| 1010 |      777 |    9 |   9 | Sneha    |
+| 1010 |      777 |    9 |   8 | Rohan    |
+| 1010 |      777 |    9 |   7 | Meera    |
+| 1010 |      777 |    9 |   6 | Ankit    |
+| 1010 |      777 |    9 |   5 | Sugandha |
+| 1010 |      777 |    9 |   4 | Kanchan  |
+| 1010 |      777 |    9 |   3 | Priya    |
+| 1010 |      777 |    9 |   2 | Pravin   |
+| 1010 |      777 |    9 |   1 | Kedar    |
+| 1011 |      845 |   10 |  16 | Mia      |
+| 1011 |      845 |   10 |  15 | Kabir    |
+| 1011 |      845 |   10 |  14 | Tanvi    |
+| 1011 |      845 |   10 |  13 | Yash     |
+| 1011 |      845 |   10 |  12 | Neha     |
+| 1011 |      845 |   10 |  11 | Divya    |
+| 1011 |      845 |   10 |  10 | Aarav    |
+| 1011 |      845 |   10 |   9 | Sneha    |
+| 1011 |      845 |   10 |   8 | Rohan    |
+| 1011 |      845 |   10 |   7 | Meera    |
+| 1011 |      845 |   10 |   6 | Ankit    |
+| 1011 |      845 |   10 |   5 | Sugandha |
+| 1011 |      845 |   10 |   4 | Kanchan  |
+| 1011 |      845 |   10 |   3 | Priya    |
+| 1011 |      845 |   10 |   2 | Pravin   |
+| 1011 |      845 |   10 |   1 | Kedar    |
+| 1012 |      659 |   11 |  16 | Mia      |
+| 1012 |      659 |   11 |  15 | Kabir    |
+| 1012 |      659 |   11 |  14 | Tanvi    |
+| 1012 |      659 |   11 |  13 | Yash     |
+| 1012 |      659 |   11 |  12 | Neha     |
+| 1012 |      659 |   11 |  11 | Divya    |
+| 1012 |      659 |   11 |  10 | Aarav    |
+| 1012 |      659 |   11 |   9 | Sneha    |
+| 1012 |      659 |   11 |   8 | Rohan    |
+| 1012 |      659 |   11 |   7 | Meera    |
+| 1012 |      659 |   11 |   6 | Ankit    |
+| 1012 |      659 |   11 |   5 | Sugandha |
+| 1012 |      659 |   11 |   4 | Kanchan  |
+| 1012 |      659 |   11 |   3 | Priya    |
+| 1012 |      659 |   11 |   2 | Pravin   |
+| 1012 |      659 |   11 |   1 | Kedar    |
+| 1013 |     1222 |   12 |  16 | Mia      |
+| 1013 |     1222 |   12 |  15 | Kabir    |
+| 1013 |     1222 |   12 |  14 | Tanvi    |
+| 1013 |     1222 |   12 |  13 | Yash     |
+| 1013 |     1222 |   12 |  12 | Neha     |
+| 1013 |     1222 |   12 |  11 | Divya    |
+| 1013 |     1222 |   12 |  10 | Aarav    |
+| 1013 |     1222 |   12 |   9 | Sneha    |
+| 1013 |     1222 |   12 |   8 | Rohan    |
+| 1013 |     1222 |   12 |   7 | Meera    |
+| 1013 |     1222 |   12 |   6 | Ankit    |
+| 1013 |     1222 |   12 |   5 | Sugandha |
+| 1013 |     1222 |   12 |   4 | Kanchan  |
+| 1013 |     1222 |   12 |   3 | Priya    |
+| 1013 |     1222 |   12 |   2 | Pravin   |
+| 1013 |     1222 |   12 |   1 | Kedar    |
+| 1014 |     3333 |   13 |  16 | Mia      |
+| 1014 |     3333 |   13 |  15 | Kabir    |
+| 1014 |     3333 |   13 |  14 | Tanvi    |
+| 1014 |     3333 |   13 |  13 | Yash     |
+| 1014 |     3333 |   13 |  12 | Neha     |
+| 1014 |     3333 |   13 |  11 | Divya    |
+| 1014 |     3333 |   13 |  10 | Aarav    |
+| 1014 |     3333 |   13 |   9 | Sneha    |
+| 1014 |     3333 |   13 |   8 | Rohan    |
+| 1014 |     3333 |   13 |   7 | Meera    |
+| 1014 |     3333 |   13 |   6 | Ankit    |
+| 1014 |     3333 |   13 |   5 | Sugandha |
+| 1014 |     3333 |   13 |   4 | Kanchan  |
+| 1014 |     3333 |   13 |   3 | Priya    |
+| 1014 |     3333 |   13 |   2 | Pravin   |
+| 1014 |     3333 |   13 |   1 | Kedar    |
+| 1015 |     1444 |   14 |  16 | Mia      |
+| 1015 |     1444 |   14 |  15 | Kabir    |
+| 1015 |     1444 |   14 |  14 | Tanvi    |
+| 1015 |     1444 |   14 |  13 | Yash     |
+| 1015 |     1444 |   14 |  12 | Neha     |
+| 1015 |     1444 |   14 |  11 | Divya    |
+| 1015 |     1444 |   14 |  10 | Aarav    |
+| 1015 |     1444 |   14 |   9 | Sneha    |
+| 1015 |     1444 |   14 |   8 | Rohan    |
+| 1015 |     1444 |   14 |   7 | Meera    |
+| 1015 |     1444 |   14 |   6 | Ankit    |
+| 1015 |     1444 |   14 |   5 | Sugandha |
+| 1015 |     1444 |   14 |   4 | Kanchan  |
+| 1015 |     1444 |   14 |   3 | Priya    |
+| 1015 |     1444 |   14 |   2 | Pravin   |
+| 1015 |     1444 |   14 |   1 | Kedar    |
+| 1016 |     2399 |   15 |  16 | Mia      |
+| 1016 |     2399 |   15 |  15 | Kabir    |
+| 1016 |     2399 |   15 |  14 | Tanvi    |
+| 1016 |     2399 |   15 |  13 | Yash     |
+| 1016 |     2399 |   15 |  12 | Neha     |
+| 1016 |     2399 |   15 |  11 | Divya    |
+| 1016 |     2399 |   15 |  10 | Aarav    |
+| 1016 |     2399 |   15 |   9 | Sneha    |
+| 1016 |     2399 |   15 |   8 | Rohan    |
+| 1016 |     2399 |   15 |   7 | Meera    |
+| 1016 |     2399 |   15 |   6 | Ankit    |
+| 1016 |     2399 |   15 |   5 | Sugandha |
+| 1016 |     2399 |   15 |   4 | Kanchan  |
+| 1016 |     2399 |   15 |   3 | Priya    |
+| 1016 |     2399 |   15 |   2 | Pravin   |
+| 1016 |     2399 |   15 |   1 | Kedar    |
+| 1017 |      100 |    6 |  16 | Mia      |
+| 1017 |      100 |    6 |  15 | Kabir    |
+| 1017 |      100 |    6 |  14 | Tanvi    |
+| 1017 |      100 |    6 |  13 | Yash     |
+| 1017 |      100 |    6 |  12 | Neha     |
+| 1017 |      100 |    6 |  11 | Divya    |
+| 1017 |      100 |    6 |  10 | Aarav    |
+| 1017 |      100 |    6 |   9 | Sneha    |
+| 1017 |      100 |    6 |   8 | Rohan    |
+| 1017 |      100 |    6 |   7 | Meera    |
+| 1017 |      100 |    6 |   6 | Ankit    |
+| 1017 |      100 |    6 |   5 | Sugandha |
+| 1017 |      100 |    6 |   4 | Kanchan  |
+| 1017 |      100 |    6 |   3 | Priya    |
+| 1017 |      100 |    6 |   2 | Pravin   |
+| 1017 |      100 |    6 |   1 | Kedar    |
+| 1018 |      299 |    6 |  16 | Mia      |
+| 1018 |      299 |    6 |  15 | Kabir    |
+| 1018 |      299 |    6 |  14 | Tanvi    |
+| 1018 |      299 |    6 |  13 | Yash     |
+| 1018 |      299 |    6 |  12 | Neha     |
+| 1018 |      299 |    6 |  11 | Divya    |
+| 1018 |      299 |    6 |  10 | Aarav    |
+| 1018 |      299 |    6 |   9 | Sneha    |
+| 1018 |      299 |    6 |   8 | Rohan    |
+| 1018 |      299 |    6 |   7 | Meera    |
+| 1018 |      299 |    6 |   6 | Ankit    |
+| 1018 |      299 |    6 |   5 | Sugandha |
+| 1018 |      299 |    6 |   4 | Kanchan  |
+| 1018 |      299 |    6 |   3 | Priya    |
+| 1018 |      299 |    6 |   2 | Pravin   |
+| 1018 |      299 |    6 |   1 | Kedar    |
+| 1019 |      759 |    7 |  16 | Mia      |
+| 1019 |      759 |    7 |  15 | Kabir    |
+| 1019 |      759 |    7 |  14 | Tanvi    |
+| 1019 |      759 |    7 |  13 | Yash     |
+| 1019 |      759 |    7 |  12 | Neha     |
+| 1019 |      759 |    7 |  11 | Divya    |
+| 1019 |      759 |    7 |  10 | Aarav    |
+| 1019 |      759 |    7 |   9 | Sneha    |
+| 1019 |      759 |    7 |   8 | Rohan    |
+| 1019 |      759 |    7 |   7 | Meera    |
+| 1019 |      759 |    7 |   6 | Ankit    |
+| 1019 |      759 |    7 |   5 | Sugandha |
+| 1019 |      759 |    7 |   4 | Kanchan  |
+| 1019 |      759 |    7 |   3 | Priya    |
+| 1019 |      759 |    7 |   2 | Pravin   |
+| 1019 |      759 |    7 |   1 | Kedar    |
+| 1020 |      892 |    8 |  16 | Mia      |
+| 1020 |      892 |    8 |  15 | Kabir    |
+| 1020 |      892 |    8 |  14 | Tanvi    |
+| 1020 |      892 |    8 |  13 | Yash     |
+| 1020 |      892 |    8 |  12 | Neha     |
+| 1020 |      892 |    8 |  11 | Divya    |
+| 1020 |      892 |    8 |  10 | Aarav    |
+| 1020 |      892 |    8 |   9 | Sneha    |
+| 1020 |      892 |    8 |   8 | Rohan    |
+| 1020 |      892 |    8 |   7 | Meera    |
+| 1020 |      892 |    8 |   6 | Ankit    |
+| 1020 |      892 |    8 |   5 | Sugandha |
+| 1020 |      892 |    8 |   4 | Kanchan  |
+| 1020 |      892 |    8 |   3 | Priya    |
+| 1020 |      892 |    8 |   2 | Pravin   |
+| 1020 |      892 |    8 |   1 | Kedar    |
+| 1021 |     1400 | NULL |  16 | Mia      |
+| 1021 |     1400 | NULL |  15 | Kabir    |
+| 1021 |     1400 | NULL |  14 | Tanvi    |
+| 1021 |     1400 | NULL |  13 | Yash     |
+| 1021 |     1400 | NULL |  12 | Neha     |
+| 1021 |     1400 | NULL |  11 | Divya    |
+| 1021 |     1400 | NULL |  10 | Aarav    |
+| 1021 |     1400 | NULL |   9 | Sneha    |
+| 1021 |     1400 | NULL |   8 | Rohan    |
+| 1021 |     1400 | NULL |   7 | Meera    |
+| 1021 |     1400 | NULL |   6 | Ankit    |
+| 1021 |     1400 | NULL |   5 | Sugandha |
+| 1021 |     1400 | NULL |   4 | Kanchan  |
+| 1021 |     1400 | NULL |   3 | Priya    |
+| 1021 |     1400 | NULL |   2 | Pravin   |
+| 1021 |     1400 | NULL |   1 | Kedar    |
+| 1022 |     2255 |   10 |  16 | Mia      |
+| 1022 |     2255 |   10 |  15 | Kabir    |
+| 1022 |     2255 |   10 |  14 | Tanvi    |
+| 1022 |     2255 |   10 |  13 | Yash     |
+| 1022 |     2255 |   10 |  12 | Neha     |
+| 1022 |     2255 |   10 |  11 | Divya    |
+| 1022 |     2255 |   10 |  10 | Aarav    |
+| 1022 |     2255 |   10 |   9 | Sneha    |
+| 1022 |     2255 |   10 |   8 | Rohan    |
+| 1022 |     2255 |   10 |   7 | Meera    |
+| 1022 |     2255 |   10 |   6 | Ankit    |
+| 1022 |     2255 |   10 |   5 | Sugandha |
+| 1022 |     2255 |   10 |   4 | Kanchan  |
+| 1022 |     2255 |   10 |   3 | Priya    |
+| 1022 |     2255 |   10 |   2 | Pravin   |
+| 1022 |     2255 |   10 |   1 | Kedar    |
+| 1023 |     3020 |   11 |  16 | Mia      |
+| 1023 |     3020 |   11 |  15 | Kabir    |
+| 1023 |     3020 |   11 |  14 | Tanvi    |
+| 1023 |     3020 |   11 |  13 | Yash     |
+| 1023 |     3020 |   11 |  12 | Neha     |
+| 1023 |     3020 |   11 |  11 | Divya    |
+| 1023 |     3020 |   11 |  10 | Aarav    |
+| 1023 |     3020 |   11 |   9 | Sneha    |
+| 1023 |     3020 |   11 |   8 | Rohan    |
+| 1023 |     3020 |   11 |   7 | Meera    |
+| 1023 |     3020 |   11 |   6 | Ankit    |
+| 1023 |     3020 |   11 |   5 | Sugandha |
+| 1023 |     3020 |   11 |   4 | Kanchan  |
+| 1023 |     3020 |   11 |   3 | Priya    |
+| 1023 |     3020 |   11 |   2 | Pravin   |
+| 1023 |     3020 |   11 |   1 | Kedar    |
+| 1024 |      419 |   12 |  16 | Mia      |
+| 1024 |      419 |   12 |  15 | Kabir    |
+| 1024 |      419 |   12 |  14 | Tanvi    |
+| 1024 |      419 |   12 |  13 | Yash     |
+| 1024 |      419 |   12 |  12 | Neha     |
+| 1024 |      419 |   12 |  11 | Divya    |
+| 1024 |      419 |   12 |  10 | Aarav    |
+| 1024 |      419 |   12 |   9 | Sneha    |
+| 1024 |      419 |   12 |   8 | Rohan    |
+| 1024 |      419 |   12 |   7 | Meera    |
+| 1024 |      419 |   12 |   6 | Ankit    |
+| 1024 |      419 |   12 |   5 | Sugandha |
+| 1024 |      419 |   12 |   4 | Kanchan  |
+| 1024 |      419 |   12 |   3 | Priya    |
+| 1024 |      419 |   12 |   2 | Pravin   |
+| 1024 |      419 |   12 |   1 | Kedar    |
+| 1025 |     1800 |   13 |  16 | Mia      |
+| 1025 |     1800 |   13 |  15 | Kabir    |
+| 1025 |     1800 |   13 |  14 | Tanvi    |
+| 1025 |     1800 |   13 |  13 | Yash     |
+| 1025 |     1800 |   13 |  12 | Neha     |
+| 1025 |     1800 |   13 |  11 | Divya    |
+| 1025 |     1800 |   13 |  10 | Aarav    |
+| 1025 |     1800 |   13 |   9 | Sneha    |
+| 1025 |     1800 |   13 |   8 | Rohan    |
+| 1025 |     1800 |   13 |   7 | Meera    |
+| 1025 |     1800 |   13 |   6 | Ankit    |
+| 1025 |     1800 |   13 |   5 | Sugandha |
+| 1025 |     1800 |   13 |   4 | Kanchan  |
+| 1025 |     1800 |   13 |   3 | Priya    |
+| 1025 |     1800 |   13 |   2 | Pravin   |
+| 1025 |     1800 |   13 |   1 | Kedar    |
+| 1026 |     2650 |   14 |  16 | Mia      |
+| 1026 |     2650 |   14 |  15 | Kabir    |
+| 1026 |     2650 |   14 |  14 | Tanvi    |
+| 1026 |     2650 |   14 |  13 | Yash     |
+| 1026 |     2650 |   14 |  12 | Neha     |
+| 1026 |     2650 |   14 |  11 | Divya    |
+| 1026 |     2650 |   14 |  10 | Aarav    |
+| 1026 |     2650 |   14 |   9 | Sneha    |
+| 1026 |     2650 |   14 |   8 | Rohan    |
+| 1026 |     2650 |   14 |   7 | Meera    |
+| 1026 |     2650 |   14 |   6 | Ankit    |
+| 1026 |     2650 |   14 |   5 | Sugandha |
+| 1026 |     2650 |   14 |   4 | Kanchan  |
+| 1026 |     2650 |   14 |   3 | Priya    |
+| 1026 |     2650 |   14 |   2 | Pravin   |
+| 1026 |     2650 |   14 |   1 | Kedar    |
+| 1027 |     3999 |   15 |  16 | Mia      |
+| 1027 |     3999 |   15 |  15 | Kabir    |
+| 1027 |     3999 |   15 |  14 | Tanvi    |
+| 1027 |     3999 |   15 |  13 | Yash     |
+| 1027 |     3999 |   15 |  12 | Neha     |
+| 1027 |     3999 |   15 |  11 | Divya    |
+| 1027 |     3999 |   15 |  10 | Aarav    |
+| 1027 |     3999 |   15 |   9 | Sneha    |
+| 1027 |     3999 |   15 |   8 | Rohan    |
+| 1027 |     3999 |   15 |   7 | Meera    |
+| 1027 |     3999 |   15 |   6 | Ankit    |
+| 1027 |     3999 |   15 |   5 | Sugandha |
+| 1027 |     3999 |   15 |   4 | Kanchan  |
+| 1027 |     3999 |   15 |   3 | Priya    |
+| 1027 |     3999 |   15 |   2 | Pravin   |
+| 1027 |     3999 |   15 |   1 | Kedar    |
+| 1028 |     1200 |    1 |  16 | Mia      |
+| 1028 |     1200 |    1 |  15 | Kabir    |
+| 1028 |     1200 |    1 |  14 | Tanvi    |
+| 1028 |     1200 |    1 |  13 | Yash     |
+| 1028 |     1200 |    1 |  12 | Neha     |
+| 1028 |     1200 |    1 |  11 | Divya    |
+| 1028 |     1200 |    1 |  10 | Aarav    |
+| 1028 |     1200 |    1 |   9 | Sneha    |
+| 1028 |     1200 |    1 |   8 | Rohan    |
+| 1028 |     1200 |    1 |   7 | Meera    |
+| 1028 |     1200 |    1 |   6 | Ankit    |
+| 1028 |     1200 |    1 |   5 | Sugandha |
+| 1028 |     1200 |    1 |   4 | Kanchan  |
+| 1028 |     1200 |    1 |   3 | Priya    |
+| 1028 |     1200 |    1 |   2 | Pravin   |
+| 1028 |     1200 |    1 |   1 | Kedar    |
+| 1029 |     1570 |    2 |  16 | Mia      |
+| 1029 |     1570 |    2 |  15 | Kabir    |
+| 1029 |     1570 |    2 |  14 | Tanvi    |
+| 1029 |     1570 |    2 |  13 | Yash     |
+| 1029 |     1570 |    2 |  12 | Neha     |
+| 1029 |     1570 |    2 |  11 | Divya    |
+| 1029 |     1570 |    2 |  10 | Aarav    |
+| 1029 |     1570 |    2 |   9 | Sneha    |
+| 1029 |     1570 |    2 |   8 | Rohan    |
+| 1029 |     1570 |    2 |   7 | Meera    |
+| 1029 |     1570 |    2 |   6 | Ankit    |
+| 1029 |     1570 |    2 |   5 | Sugandha |
+| 1029 |     1570 |    2 |   4 | Kanchan  |
+| 1029 |     1570 |    2 |   3 | Priya    |
+| 1029 |     1570 |    2 |   2 | Pravin   |
+| 1029 |     1570 |    2 |   1 | Kedar    |
+| 1030 |      188 |    3 |  16 | Mia      |
+| 1030 |      188 |    3 |  15 | Kabir    |
+| 1030 |      188 |    3 |  14 | Tanvi    |
+| 1030 |      188 |    3 |  13 | Yash     |
+| 1030 |      188 |    3 |  12 | Neha     |
+| 1030 |      188 |    3 |  11 | Divya    |
+| 1030 |      188 |    3 |  10 | Aarav    |
+| 1030 |      188 |    3 |   9 | Sneha    |
+| 1030 |      188 |    3 |   8 | Rohan    |
+| 1030 |      188 |    3 |   7 | Meera    |
+| 1030 |      188 |    3 |   6 | Ankit    |
+| 1030 |      188 |    3 |   5 | Sugandha |
+| 1030 |      188 |    3 |   4 | Kanchan  |
+| 1030 |      188 |    3 |   3 | Priya    |
+| 1030 |      188 |    3 |   2 | Pravin   |
+| 1030 |      188 |    3 |   1 | Kedar    |
+| 1031 |     2000 |    4 |  16 | Mia      |
+| 1031 |     2000 |    4 |  15 | Kabir    |
+| 1031 |     2000 |    4 |  14 | Tanvi    |
+| 1031 |     2000 |    4 |  13 | Yash     |
+| 1031 |     2000 |    4 |  12 | Neha     |
+| 1031 |     2000 |    4 |  11 | Divya    |
+| 1031 |     2000 |    4 |  10 | Aarav    |
+| 1031 |     2000 |    4 |   9 | Sneha    |
+| 1031 |     2000 |    4 |   8 | Rohan    |
+| 1031 |     2000 |    4 |   7 | Meera    |
+| 1031 |     2000 |    4 |   6 | Ankit    |
+| 1031 |     2000 |    4 |   5 | Sugandha |
+| 1031 |     2000 |    4 |   4 | Kanchan  |
+| 1031 |     2000 |    4 |   3 | Priya    |
+| 1031 |     2000 |    4 |   2 | Pravin   |
+| 1031 |     2000 |    4 |   1 | Kedar    |
+| 1032 |      415 |    5 |  16 | Mia      |
+| 1032 |      415 |    5 |  15 | Kabir    |
+| 1032 |      415 |    5 |  14 | Tanvi    |
+| 1032 |      415 |    5 |  13 | Yash     |
+| 1032 |      415 |    5 |  12 | Neha     |
+| 1032 |      415 |    5 |  11 | Divya    |
+| 1032 |      415 |    5 |  10 | Aarav    |
+| 1032 |      415 |    5 |   9 | Sneha    |
+| 1032 |      415 |    5 |   8 | Rohan    |
+| 1032 |      415 |    5 |   7 | Meera    |
+| 1032 |      415 |    5 |   6 | Ankit    |
+| 1032 |      415 |    5 |   5 | Sugandha |
+| 1032 |      415 |    5 |   4 | Kanchan  |
+| 1032 |      415 |    5 |   3 | Priya    |
+| 1032 |      415 |    5 |   2 | Pravin   |
+| 1032 |      415 |    5 |   1 | Kedar    |
+| 1033 |      799 |    6 |  16 | Mia      |
+| 1033 |      799 |    6 |  15 | Kabir    |
+| 1033 |      799 |    6 |  14 | Tanvi    |
+| 1033 |      799 |    6 |  13 | Yash     |
+| 1033 |      799 |    6 |  12 | Neha     |
+| 1033 |      799 |    6 |  11 | Divya    |
+| 1033 |      799 |    6 |  10 | Aarav    |
+| 1033 |      799 |    6 |   9 | Sneha    |
+| 1033 |      799 |    6 |   8 | Rohan    |
+| 1033 |      799 |    6 |   7 | Meera    |
+| 1033 |      799 |    6 |   6 | Ankit    |
+| 1033 |      799 |    6 |   5 | Sugandha |
+| 1033 |      799 |    6 |   4 | Kanchan  |
+| 1033 |      799 |    6 |   3 | Priya    |
+| 1033 |      799 |    6 |   2 | Pravin   |
+| 1033 |      799 |    6 |   1 | Kedar    |
+| 1034 |      910 |    7 |  16 | Mia      |
+| 1034 |      910 |    7 |  15 | Kabir    |
+| 1034 |      910 |    7 |  14 | Tanvi    |
+| 1034 |      910 |    7 |  13 | Yash     |
+| 1034 |      910 |    7 |  12 | Neha     |
+| 1034 |      910 |    7 |  11 | Divya    |
+| 1034 |      910 |    7 |  10 | Aarav    |
+| 1034 |      910 |    7 |   9 | Sneha    |
+| 1034 |      910 |    7 |   8 | Rohan    |
+| 1034 |      910 |    7 |   7 | Meera    |
+| 1034 |      910 |    7 |   6 | Ankit    |
+| 1034 |      910 |    7 |   5 | Sugandha |
+| 1034 |      910 |    7 |   4 | Kanchan  |
+| 1034 |      910 |    7 |   3 | Priya    |
+| 1034 |      910 |    7 |   2 | Pravin   |
+| 1034 |      910 |    7 |   1 | Kedar    |
+| 1035 |     1020 |    8 |  16 | Mia      |
+| 1035 |     1020 |    8 |  15 | Kabir    |
+| 1035 |     1020 |    8 |  14 | Tanvi    |
+| 1035 |     1020 |    8 |  13 | Yash     |
+| 1035 |     1020 |    8 |  12 | Neha     |
+| 1035 |     1020 |    8 |  11 | Divya    |
+| 1035 |     1020 |    8 |  10 | Aarav    |
+| 1035 |     1020 |    8 |   9 | Sneha    |
+| 1035 |     1020 |    8 |   8 | Rohan    |
+| 1035 |     1020 |    8 |   7 | Meera    |
+| 1035 |     1020 |    8 |   6 | Ankit    |
+| 1035 |     1020 |    8 |   5 | Sugandha |
+| 1035 |     1020 |    8 |   4 | Kanchan  |
+| 1035 |     1020 |    8 |   3 | Priya    |
+| 1035 |     1020 |    8 |   2 | Pravin   |
+| 1035 |     1020 |    8 |   1 | Kedar    |
+| 1036 |      233 |    9 |  16 | Mia      |
+| 1036 |      233 |    9 |  15 | Kabir    |
+| 1036 |      233 |    9 |  14 | Tanvi    |
+| 1036 |      233 |    9 |  13 | Yash     |
+| 1036 |      233 |    9 |  12 | Neha     |
+| 1036 |      233 |    9 |  11 | Divya    |
+| 1036 |      233 |    9 |  10 | Aarav    |
+| 1036 |      233 |    9 |   9 | Sneha    |
+| 1036 |      233 |    9 |   8 | Rohan    |
+| 1036 |      233 |    9 |   7 | Meera    |
+| 1036 |      233 |    9 |   6 | Ankit    |
+| 1036 |      233 |    9 |   5 | Sugandha |
+| 1036 |      233 |    9 |   4 | Kanchan  |
+| 1036 |      233 |    9 |   3 | Priya    |
+| 1036 |      233 |    9 |   2 | Pravin   |
+| 1036 |      233 |    9 |   1 | Kedar    |
+| 1037 |      744 |   10 |  16 | Mia      |
+| 1037 |      744 |   10 |  15 | Kabir    |
+| 1037 |      744 |   10 |  14 | Tanvi    |
+| 1037 |      744 |   10 |  13 | Yash     |
+| 1037 |      744 |   10 |  12 | Neha     |
+| 1037 |      744 |   10 |  11 | Divya    |
+| 1037 |      744 |   10 |  10 | Aarav    |
+| 1037 |      744 |   10 |   9 | Sneha    |
+| 1037 |      744 |   10 |   8 | Rohan    |
+| 1037 |      744 |   10 |   7 | Meera    |
+| 1037 |      744 |   10 |   6 | Ankit    |
+| 1037 |      744 |   10 |   5 | Sugandha |
+| 1037 |      744 |   10 |   4 | Kanchan  |
+| 1037 |      744 |   10 |   3 | Priya    |
+| 1037 |      744 |   10 |   2 | Pravin   |
+| 1037 |      744 |   10 |   1 | Kedar    |
+| 1038 |      645 | NULL |  16 | Mia      |
+| 1038 |      645 | NULL |  15 | Kabir    |
+| 1038 |      645 | NULL |  14 | Tanvi    |
+| 1038 |      645 | NULL |  13 | Yash     |
+| 1038 |      645 | NULL |  12 | Neha     |
+| 1038 |      645 | NULL |  11 | Divya    |
+| 1038 |      645 | NULL |  10 | Aarav    |
+| 1038 |      645 | NULL |   9 | Sneha    |
+| 1038 |      645 | NULL |   8 | Rohan    |
+| 1038 |      645 | NULL |   7 | Meera    |
+| 1038 |      645 | NULL |   6 | Ankit    |
+| 1038 |      645 | NULL |   5 | Sugandha |
+| 1038 |      645 | NULL |   4 | Kanchan  |
+| 1038 |      645 | NULL |   3 | Priya    |
+| 1038 |      645 | NULL |   2 | Pravin   |
+| 1038 |      645 | NULL |   1 | Kedar    |
+| 1039 |      888 |   12 |  16 | Mia      |
+| 1039 |      888 |   12 |  15 | Kabir    |
+| 1039 |      888 |   12 |  14 | Tanvi    |
+| 1039 |      888 |   12 |  13 | Yash     |
+| 1039 |      888 |   12 |  12 | Neha     |
+| 1039 |      888 |   12 |  11 | Divya    |
+| 1039 |      888 |   12 |  10 | Aarav    |
+| 1039 |      888 |   12 |   9 | Sneha    |
+| 1039 |      888 |   12 |   8 | Rohan    |
+| 1039 |      888 |   12 |   7 | Meera    |
+| 1039 |      888 |   12 |   6 | Ankit    |
+| 1039 |      888 |   12 |   5 | Sugandha |
+| 1039 |      888 |   12 |   4 | Kanchan  |
+| 1039 |      888 |   12 |   3 | Priya    |
+| 1039 |      888 |   12 |   2 | Pravin   |
+| 1039 |      888 |   12 |   1 | Kedar    |
+| 1040 |      999 |   13 |  16 | Mia      |
+| 1040 |      999 |   13 |  15 | Kabir    |
+| 1040 |      999 |   13 |  14 | Tanvi    |
+| 1040 |      999 |   13 |  13 | Yash     |
+| 1040 |      999 |   13 |  12 | Neha     |
+| 1040 |      999 |   13 |  11 | Divya    |
+| 1040 |      999 |   13 |  10 | Aarav    |
+| 1040 |      999 |   13 |   9 | Sneha    |
+| 1040 |      999 |   13 |   8 | Rohan    |
+| 1040 |      999 |   13 |   7 | Meera    |
+| 1040 |      999 |   13 |   6 | Ankit    |
+| 1040 |      999 |   13 |   5 | Sugandha |
+| 1040 |      999 |   13 |   4 | Kanchan  |
+| 1040 |      999 |   13 |   3 | Priya    |
+| 1040 |      999 |   13 |   2 | Pravin   |
+| 1040 |      999 |   13 |   1 | Kedar    |
+| 1041 |     1750 |   14 |  16 | Mia      |
+| 1041 |     1750 |   14 |  15 | Kabir    |
+| 1041 |     1750 |   14 |  14 | Tanvi    |
+| 1041 |     1750 |   14 |  13 | Yash     |
+| 1041 |     1750 |   14 |  12 | Neha     |
+| 1041 |     1750 |   14 |  11 | Divya    |
+| 1041 |     1750 |   14 |  10 | Aarav    |
+| 1041 |     1750 |   14 |   9 | Sneha    |
+| 1041 |     1750 |   14 |   8 | Rohan    |
+| 1041 |     1750 |   14 |   7 | Meera    |
+| 1041 |     1750 |   14 |   6 | Ankit    |
+| 1041 |     1750 |   14 |   5 | Sugandha |
+| 1041 |     1750 |   14 |   4 | Kanchan  |
+| 1041 |     1750 |   14 |   3 | Priya    |
+| 1041 |     1750 |   14 |   2 | Pravin   |
+| 1041 |     1750 |   14 |   1 | Kedar    |
+| 1042 |     3010 |   15 |  16 | Mia      |
+| 1042 |     3010 |   15 |  15 | Kabir    |
+| 1042 |     3010 |   15 |  14 | Tanvi    |
+| 1042 |     3010 |   15 |  13 | Yash     |
+| 1042 |     3010 |   15 |  12 | Neha     |
+| 1042 |     3010 |   15 |  11 | Divya    |
+| 1042 |     3010 |   15 |  10 | Aarav    |
+| 1042 |     3010 |   15 |   9 | Sneha    |
+| 1042 |     3010 |   15 |   8 | Rohan    |
+| 1042 |     3010 |   15 |   7 | Meera    |
+| 1042 |     3010 |   15 |   6 | Ankit    |
+| 1042 |     3010 |   15 |   5 | Sugandha |
+| 1042 |     3010 |   15 |   4 | Kanchan  |
+| 1042 |     3010 |   15 |   3 | Priya    |
+| 1042 |     3010 |   15 |   2 | Pravin   |
+| 1042 |     3010 |   15 |   1 | Kedar    |
+| 1043 |      450 |    1 |  16 | Mia      |
+| 1043 |      450 |    1 |  15 | Kabir    |
+| 1043 |      450 |    1 |  14 | Tanvi    |
+| 1043 |      450 |    1 |  13 | Yash     |
+| 1043 |      450 |    1 |  12 | Neha     |
+| 1043 |      450 |    1 |  11 | Divya    |
+| 1043 |      450 |    1 |  10 | Aarav    |
+| 1043 |      450 |    1 |   9 | Sneha    |
+| 1043 |      450 |    1 |   8 | Rohan    |
+| 1043 |      450 |    1 |   7 | Meera    |
+| 1043 |      450 |    1 |   6 | Ankit    |
+| 1043 |      450 |    1 |   5 | Sugandha |
+| 1043 |      450 |    1 |   4 | Kanchan  |
+| 1043 |      450 |    1 |   3 | Priya    |
+| 1043 |      450 |    1 |   2 | Pravin   |
+| 1043 |      450 |    1 |   1 | Kedar    |
+| 1044 |      875 | NULL |  16 | Mia      |
+| 1044 |      875 | NULL |  15 | Kabir    |
+| 1044 |      875 | NULL |  14 | Tanvi    |
+| 1044 |      875 | NULL |  13 | Yash     |
+| 1044 |      875 | NULL |  12 | Neha     |
+| 1044 |      875 | NULL |  11 | Divya    |
+| 1044 |      875 | NULL |  10 | Aarav    |
+| 1044 |      875 | NULL |   9 | Sneha    |
+| 1044 |      875 | NULL |   8 | Rohan    |
+| 1044 |      875 | NULL |   7 | Meera    |
+| 1044 |      875 | NULL |   6 | Ankit    |
+| 1044 |      875 | NULL |   5 | Sugandha |
+| 1044 |      875 | NULL |   4 | Kanchan  |
+| 1044 |      875 | NULL |   3 | Priya    |
+| 1044 |      875 | NULL |   2 | Pravin   |
+| 1044 |      875 | NULL |   1 | Kedar    |
+| 1045 |      990 |    3 |  16 | Mia      |
+| 1045 |      990 |    3 |  15 | Kabir    |
+| 1045 |      990 |    3 |  14 | Tanvi    |
+| 1045 |      990 |    3 |  13 | Yash     |
+| 1045 |      990 |    3 |  12 | Neha     |
+| 1045 |      990 |    3 |  11 | Divya    |
+| 1045 |      990 |    3 |  10 | Aarav    |
+| 1045 |      990 |    3 |   9 | Sneha    |
+| 1045 |      990 |    3 |   8 | Rohan    |
+| 1045 |      990 |    3 |   7 | Meera    |
+| 1045 |      990 |    3 |   6 | Ankit    |
+| 1045 |      990 |    3 |   5 | Sugandha |
+| 1045 |      990 |    3 |   4 | Kanchan  |
+| 1045 |      990 |    3 |   3 | Priya    |
+| 1045 |      990 |    3 |   2 | Pravin   |
+| 1045 |      990 |    3 |   1 | Kedar    |
+| 1046 |      120 |    4 |  16 | Mia      |
+| 1046 |      120 |    4 |  15 | Kabir    |
+| 1046 |      120 |    4 |  14 | Tanvi    |
+| 1046 |      120 |    4 |  13 | Yash     |
+| 1046 |      120 |    4 |  12 | Neha     |
+| 1046 |      120 |    4 |  11 | Divya    |
+| 1046 |      120 |    4 |  10 | Aarav    |
+| 1046 |      120 |    4 |   9 | Sneha    |
+| 1046 |      120 |    4 |   8 | Rohan    |
+| 1046 |      120 |    4 |   7 | Meera    |
+| 1046 |      120 |    4 |   6 | Ankit    |
+| 1046 |      120 |    4 |   5 | Sugandha |
+| 1046 |      120 |    4 |   4 | Kanchan  |
+| 1046 |      120 |    4 |   3 | Priya    |
+| 1046 |      120 |    4 |   2 | Pravin   |
+| 1046 |      120 |    4 |   1 | Kedar    |
+| 1047 |      310 |    5 |  16 | Mia      |
+| 1047 |      310 |    5 |  15 | Kabir    |
+| 1047 |      310 |    5 |  14 | Tanvi    |
+| 1047 |      310 |    5 |  13 | Yash     |
+| 1047 |      310 |    5 |  12 | Neha     |
+| 1047 |      310 |    5 |  11 | Divya    |
+| 1047 |      310 |    5 |  10 | Aarav    |
+| 1047 |      310 |    5 |   9 | Sneha    |
+| 1047 |      310 |    5 |   8 | Rohan    |
+| 1047 |      310 |    5 |   7 | Meera    |
+| 1047 |      310 |    5 |   6 | Ankit    |
+| 1047 |      310 |    5 |   5 | Sugandha |
+| 1047 |      310 |    5 |   4 | Kanchan  |
+| 1047 |      310 |    5 |   3 | Priya    |
+| 1047 |      310 |    5 |   2 | Pravin   |
+| 1047 |      310 |    5 |   1 | Kedar    |
+| 1048 |      890 |    6 |  16 | Mia      |
+| 1048 |      890 |    6 |  15 | Kabir    |
+| 1048 |      890 |    6 |  14 | Tanvi    |
+| 1048 |      890 |    6 |  13 | Yash     |
+| 1048 |      890 |    6 |  12 | Neha     |
+| 1048 |      890 |    6 |  11 | Divya    |
+| 1048 |      890 |    6 |  10 | Aarav    |
+| 1048 |      890 |    6 |   9 | Sneha    |
+| 1048 |      890 |    6 |   8 | Rohan    |
+| 1048 |      890 |    6 |   7 | Meera    |
+| 1048 |      890 |    6 |   6 | Ankit    |
+| 1048 |      890 |    6 |   5 | Sugandha |
+| 1048 |      890 |    6 |   4 | Kanchan  |
+| 1048 |      890 |    6 |   3 | Priya    |
+| 1048 |      890 |    6 |   2 | Pravin   |
+| 1048 |      890 |    6 |   1 | Kedar    |
+| 1049 |      560 |    7 |  16 | Mia      |
+| 1049 |      560 |    7 |  15 | Kabir    |
+| 1049 |      560 |    7 |  14 | Tanvi    |
+| 1049 |      560 |    7 |  13 | Yash     |
+| 1049 |      560 |    7 |  12 | Neha     |
+| 1049 |      560 |    7 |  11 | Divya    |
+| 1049 |      560 |    7 |  10 | Aarav    |
+| 1049 |      560 |    7 |   9 | Sneha    |
+| 1049 |      560 |    7 |   8 | Rohan    |
+| 1049 |      560 |    7 |   7 | Meera    |
+| 1049 |      560 |    7 |   6 | Ankit    |
+| 1049 |      560 |    7 |   5 | Sugandha |
+| 1049 |      560 |    7 |   4 | Kanchan  |
+| 1049 |      560 |    7 |   3 | Priya    |
+| 1049 |      560 |    7 |   2 | Pravin   |
+| 1049 |      560 |    7 |   1 | Kedar    |
+| 1050 |      610 |    8 |  16 | Mia      |
+| 1050 |      610 |    8 |  15 | Kabir    |
+| 1050 |      610 |    8 |  14 | Tanvi    |
+| 1050 |      610 |    8 |  13 | Yash     |
+| 1050 |      610 |    8 |  12 | Neha     |
+| 1050 |      610 |    8 |  11 | Divya    |
+| 1050 |      610 |    8 |  10 | Aarav    |
+| 1050 |      610 |    8 |   9 | Sneha    |
+| 1050 |      610 |    8 |   8 | Rohan    |
+| 1050 |      610 |    8 |   7 | Meera    |
+| 1050 |      610 |    8 |   6 | Ankit    |
+| 1050 |      610 |    8 |   5 | Sugandha |
+| 1050 |      610 |    8 |   4 | Kanchan  |
+| 1050 |      610 |    8 |   3 | Priya    |
+| 1050 |      610 |    8 |   2 | Pravin   |
+| 1050 |      610 |    8 |   1 | Kedar    |
+| 1051 |      470 | NULL |  16 | Mia      |
+| 1051 |      470 | NULL |  15 | Kabir    |
+| 1051 |      470 | NULL |  14 | Tanvi    |
+| 1051 |      470 | NULL |  13 | Yash     |
+| 1051 |      470 | NULL |  12 | Neha     |
+| 1051 |      470 | NULL |  11 | Divya    |
+| 1051 |      470 | NULL |  10 | Aarav    |
+| 1051 |      470 | NULL |   9 | Sneha    |
+| 1051 |      470 | NULL |   8 | Rohan    |
+| 1051 |      470 | NULL |   7 | Meera    |
+| 1051 |      470 | NULL |   6 | Ankit    |
+| 1051 |      470 | NULL |   5 | Sugandha |
+| 1051 |      470 | NULL |   4 | Kanchan  |
+| 1051 |      470 | NULL |   3 | Priya    |
+| 1051 |      470 | NULL |   2 | Pravin   |
+| 1051 |      470 | NULL |   1 | Kedar    |
++------+----------+------+-----+----------+
+
+
+My sql functiosn
+
+Here’s a detailed breakdown of the **most important SQL functions**, categorized and explained with syntax, use cases, and examples:
+
+---
+
+## 🔢 **Aggregate Functions** (used with `GROUP BY`, etc.)
+
+### 1. **`SUM()`**
+
+* **Purpose**: Adds up all the values in a numeric column.
+* **Syntax**:
+
+  ```sql
+  SELECT SUM(salary) FROM employees;
+  ```
+* **Use Case**: Total revenue, total sales, total marks, etc.
+
+---
+
+### 2. **`AVG()`**
+
+* **Purpose**: Returns the average (mean) value.
+* **Syntax**:
+
+  ```sql
+  SELECT AVG(score) FROM students;
+  ```
+* **Use Case**: Average salary, average rating, average marks, etc.
+
+---
+
+### 3. **`MAX()`**
+
+* **Purpose**: Returns the maximum value.
+* **Syntax**:
+
+  ```sql
+  SELECT MAX(price) FROM products;
+  ```
+
+---
+
+### 4. **`MIN()`**
+
+* **Purpose**: Returns the minimum value.
+* **Syntax**:
+
+  ```sql
+  SELECT MIN(age) FROM customers;
+  ```
+
+---
+
+### 5. **`COUNT()`**
+
+* **Purpose**: Counts the number of rows.
+* **Syntax**:
+
+  ```sql
+  SELECT COUNT(*) FROM orders;
+  SELECT COUNT(column_name) FROM table_name WHERE column_name IS NOT NULL;
+  ```
+
+---
+
+## 🔤 **String Functions**
+
+### 6. **`CONCAT()`**
+
+* **Purpose**: Joins strings together.
+* **Syntax**:
+
+  ```sql
+  SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM employees;
+  ```
+* ⚠️ **Returns NULL if any value is NULL.**
+
+---
+
+### 7. **`CONCAT_WS()`**
+
+* **Purpose**: Like `CONCAT()` but **ignores NULLs**.
+* **Syntax**:
+
+  ```sql
+  SELECT CONCAT_WS(' ', 'Hello', first_name, last_name);
+  ```
+
+---
+
+### 8. **`UPPER()` / `LOWER()`**
+
+* **Purpose**: Converts text to upper or lower case.
+* ```sql
+  SELECT UPPER(name), LOWER(name) FROM users;
+  ```
+
+---
+
+### 9. **`LENGTH()`**
+
+* **Purpose**: Returns number of characters.
+* ```sql
+  SELECT LENGTH(description) FROM products;
+  ```
+
+---
+
+### 10. **`SUBSTRING()` / `SUBSTR()`**
+
+* **Purpose**: Extracts a portion of a string.
+* ```sql
+  SELECT SUBSTRING('HelloWorld', 1, 5); -- 'Hello'
+  ```
+
+---
+
+## 📅 **Date Functions**
+
+### 11. **`NOW()` / `CURRENT_TIMESTAMP`**
+
+* Returns the current date and time.
+
+### 12. **`CURDATE()` / `CURRENT_DATE`**
+
+* Returns the current date only.
+
+### 13. **`DATEDIFF(date1, date2)`**
+
+* Returns the difference in days between two dates.
+* ```sql
+  SELECT DATEDIFF('2025-05-10', '2025-05-01'); -- 9
+  ```
+
+### 14. **`YEAR()`, `MONTH()`, `DAY()`**
+
+* Extract parts of a date.
+* ```sql
+  SELECT YEAR(order_date), MONTH(order_date) FROM orders;
+  ```
+
+---
+
+## 🧠 **Conditional & Null Handling**
+
+### 15. **`IF(condition, true_value, false_value)`**
+
+* Like an inline `if` statement.
+* ```sql
+  SELECT IF(score >= 50, 'Pass', 'Fail') FROM students;
+  ```
+
+---
+
+### 16. **`IFNULL(value, default)`**
+
+* Replaces `NULL` with a default value.
+* ```sql
+  SELECT IFNULL(last_name, 'Unknown') FROM customers;
+  ```
+
+---
+
+### 17. **`COALESCE(v1, v2, ..., vn)`**
+
+* Returns the **first non-null** value from a list.
+* ```sql
+  SELECT COALESCE(middle_name, first_name, 'N/A') FROM users;
+  ```
+
+---
+
+## 🧮 **Math Functions**
+
+### 18. **`ROUND(number, decimals)`**
+
+* Rounds a number to specified decimal places.
+* ```sql
+  SELECT ROUND(3.14159, 2); -- 3.14
+  ```
+
+### 19. **`FLOOR()` / `CEIL()`**
+
+* Returns largest/smallest whole number less/greater than input.
+
+---
+
+
+logical operator s
+
+where cond1 and cond2
+where cond1 or cond 2
+where not cond1
+
+you can put multiple conditions as well
+
+where not cond1 and not cond2 
+
+between: used within on ecolumn
+
+where column_name between value1,value2;
+
+Note < > operators works with date also
+
+in : where colmnName in (value1,value2,value3)  : this is set so basically in check if the column tup[le is iunt he give set if yes then returns
+
+
+
+wild card characters: used to substitute one or more characters in a string
+
+%: begins or ends with character(s)
+
+create table students(
+  id int primary key auto_increment,
+  name varchar(30)
+);
+
+insert into students(name) values("Kedar"),("Kashinath"),("pravin"),("Priya");
+
+select * from students
+where name LIKE "k%";
+
+
+Output:
+
++----+-----------+
+| id | name      |
++----+-----------+
+|  1 | Kedar     |
+|  2 | Kashinath |
++----+-----------+
+
+create table students(
+  id int primary key auto_increment,
+  name varchar(30)
+);
+
+insert into students(name) values("Kedar"),("Kashinath"),("pravin"),("Priya");
+
+select * from students
+where name LIKE "ke%";
+
+Output:
+
++----+-------+
+| id | name  |
++----+-------+
+|  1 | Kedar |
++----+-------+
+
+
+Ends with :
+
+create table students(
+  id int primary key auto_increment,
+  name varchar(30)
+);
+
+insert into students(name) values("Kedar"),("Kashinath"),("pravin"),("Priya");
+
+select * from students
+where name LIKE "%r";
+
+Output:
+
++----+-------+
+| id | name  |
++----+-------+
+|  1 | Kedar |
++----+-------+
+
+
+_: represents one random letter means to find names that may start with any leter but next sequence should be as given
+
+
+create table students(
+  id int primary key auto_increment,
+  name varchar(30)
+);
+
+insert into students(name) values("Kedar"),("Kashinath"),("pravin"),("Priya");
+
+select * from students
+where name LIKE "_ed_r";
+
+Output:
+
++----+-------+
+| id | name  |
++----+-------+
+|  1 | Kedar |
++----+-------+
+
+combination of two
+
+select * from students
+where name LIKE "_r%";
+
+first char can be anything then comesr and later any character or characters are accepted
+
+Output:
+
++----+--------+
+| id | name   |
++----+--------+
+|  3 | pravin |
+|  4 | Priya  |
++----+--------+
+
+order by : lists the output in either asc or desdc on the given column  
+
+select * from students
+order by id desc;
+
+Output:
+
++----+-----------+
+| id | name      |
++----+-----------+
+|  4 | Priya     |
+|  3 | pravin    |
+|  2 | Kashinath |
+|  1 | Kedar     |
++----+-----------+
+
+create table students(
+  id int primary key auto_increment,
+  name varchar(30)
+);
+
+insert into students(name) values("Kedar"),("Kashinath"),("pravin"),("Priya");
+
+select * from students
+order by name asc;
+
+Output:
+
++----+-----------+
+| id | name      |
++----+-----------+
+|  2 | Kashinath |
+|  1 | Kedar     |
+|  3 | pravin    |
+|  4 | Priya     |
++----+-----------+
+
+
+multiple order by: if one column is same it will order them wrt the 2nd column
+
+
+create table students(
+  id int primary key auto_increment,
+  name varchar(30)
+);
+
+insert into students(name) values("Kedar"),("Kedar"),("Kashinath"),("pravin"),("Priya");
+
+select * from students
+order by name,id asc;
+
+
+                                               
+Output:
+
++----+-----------+
+| id | name      |
++----+-----------+
+|  3 | Kashinath |
+|  1 | Kedar     |
+|  2 | Kedar     |
+|  4 | pravin    |
+|  5 | Priya     |
++----+-----------+
+
+you also can decide asc or desc for columns 
+
+select * from students
+order by name desc ,id asc;
+
+Output:
+
++----+-----------+
+| id | name      |
++----+-----------+
+|  5 | Priya     |
+|  4 | pravin    |
+|  1 | Kedar     |
+|  2 | Kedar     |
+|  3 | Kashinath |
++----+-----------+
+
+                          
+ 
+LIMIT:
+
+select * from students
+limit 1;
+
+Output:
+
++----+-------+
+| id | name  |
++----+-------+
+|  1 | Kedar |
++----+-------+
+
+returns number of records specified based on primary key or first column 
+we can change this by order by 
+Note : order by default order is asc
+
+
+select * from students
+order by name  limit 1;
+
+Output:
+
++----+-----------+
+| id | name      |
++----+-----------+
+|  3 | Kashinath |
++----+-----------+
+
+Note: if a number is given that exceeds total count it wont trhonw an error it will just display all the records
+
+limit also takes 2nd argument : offset
+
+select * from students
+limit 2,2;
+
+leave first two and return 2 after that 
+
+
+create table students(
+  id int primary key auto_increment,
+  name varchar(30)
+);
+
+insert into students(name) values("Kedar"),("Kashinath"),("pravin"),("Priya");
+
+select * from students
+limit 1,3;
+
+Output:
+
++----+-----------+
+| id | name      |
++----+-----------+
+|  2 | Kashinath |
+|  3 | pravin    |
+|  4 | Priya     |
++----+-----------+
+
+leave first return next 3 here 1 is offset 
+
+this can be used to displaly 10 records per page
+
+1.limit 10
+2.limit 10,10
+3.limit 20,10
+4,limit 30,10
+
+
+union:
+
+it combines the results of two or more select statements
+
+
+
+-- create
+CREATE TABLE EMPLOYEE (
+  empId INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  dept TEXT NOT NULL
+);
+
+-- insert
+INSERT INTO EMPLOYEE VALUES (0001, 'Clark', 'Sales');
+INSERT INTO EMPLOYEE VALUES (0002, 'Dave', 'Accounting');
+INSERT INTO EMPLOYEE VALUES (0003, 'Ava', 'Sales');
+
+-- fetch 
+SELECT * FROM EMPLOYEE WHERE dept = 'Sales'
+UNION 
+SELECT * FROM EMPLOYEE WHERE empId = 0002;
+
+
+Output:
+
++-------+-------+------------+
+| empId | name  | dept       |
++-------+-------+------------+
+|     1 | Clark | Sales      |
+|     3 | Ava   | Sales      |
+|     2 | Dave  | Accounting |
++-------+-------+------------+
+
+if you are combining results of two selects with different columns union wont work
+
+
+-- create
+CREATE TABLE EMPLOYEE (
+  empId INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  dept TEXT NOT NULL
+);
+
+-- insert
+INSERT INTO EMPLOYEE VALUES (0001, 'Clark', 'Sales');
+INSERT INTO EMPLOYEE VALUES (0002, 'Dave', 'Accounting');
+INSERT INTO EMPLOYEE VALUES (0003, 'Ava', 'Sales');
+
+-- fetch 
+SELECT empId FROM EMPLOYEE WHERE dept = 'Sales'
+UNION 
+SELECT * FROM EMPLOYEE WHERE empId = 0002;
+
+Output:
+
+ERROR 1222 (21000) at line 15: The used SELECT statements have a different number of columns
+
+
+If a value is in both table by adding UNION, in result table it wont allow duplicate means instead of one from each table it will only display one entry from the first table 
+if you want both entries use UNION ALL instead of UNION
+
+
+Self join : join of a table to itself
+
+CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    manager_id INT,
+    FOREIGN KEY (manager_id) REFERENCES employees(emp_id)
+);
+
+INSERT INTO employees (emp_id, name, manager_id) VALUES
+(1, 'Alice', NULL),
+(2, 'Bob', 1),
+(3, 'Charlie', 1),
+(4, 'David', 2),
+(5, 'Eva', 2);
+
+SELECT * FROM employees as e1
+INNER JOIN employees as e2 
+ON e1.emp_id=e2.manager_id;
+
+
+e1 is the first copy of the table and e2 is second
+
+because manage is alos in employee we are using self join otherwise we could have used other joins
+and join is happening on first table empid and 2nd table (copy) manager_id
+Output:
+
++--------+-------+------------+--------+---------+------------+
+| emp_id | name  | manager_id | emp_id | name    | manager_id |
++--------+-------+------------+--------+---------+------------+
+|      1 | Alice |       NULL |      2 | Bob     |          1 |
+|      1 | Alice |       NULL |      3 | Charlie |          1 |
+|      2 | Bob   |          1 |      4 | David   |          2 |
+|      2 | Bob   |          1 |      5 | Eva     |          2 |
++--------+-------+------------+--------+---------+------------+
+
+we can select columns as well,
+
+SELECT e1.emp_id,e1.name,e2.manager_id,e2.name FROM employees as e1
+INNER JOIN employees as e2 
+ON e1.emp_id=e2.manager_id;
+
+alias are used to get rid of the confusion whether empid is of first table or 2nd table
+
++--------+-------+------------+---------+
+| emp_id | name  | manager_id | name    |
++--------+-------+------------+---------+
+|      1 | Alice |          1 | Bob     |
+|      1 | Alice |          1 | Charlie |
+|      2 | Bob   |          2 | David   |
+|      2 | Bob   |          2 | Eva     |
++--------+-------+------------+---------+
+
+so basically alice has 2 managers one of them is bob bob also has 2 mangers 
+
+DAVID>BOB>ALICE basically 
+
+
+MYSQL views:
+
+A virtual table based on the result-set of an SQL statement
+the fields in a viw are the fields from one or more real tables in the database
+theyre not real tables but can be interacted with as if they were
+
+
+CREATE TABLE sales (
+    sale_id INT PRIMARY KEY,
+    customer_name VARCHAR(100),
+    product VARCHAR(100),
+    quantity INT,
+    price_per_unit DECIMAL(10, 2)
+);
+
+INSERT INTO sales (sale_id, customer_name, product, quantity, price_per_unit) VALUES
+(1, 'John', 'Laptop', 1, 700),
+(2, 'Alice', 'Smartphone', 2, 300),
+(3, 'Bob', 'Laptop', 1, 700),
+(4, 'John', 'Tablet', 3, 200),
+(5, 'Alice', 'Laptop', 1, 700);
+
+
+CREATE VIEW view_name AS
+SELECT * FROM sales;
+
+Output:
+
+Program did not output anything!
+
+
+because select is in view it didn't output anything to output something we need to query trhe view
+
+SELECT * FROM view_name;
+
+Output:
+
++---------+---------------+------------+----------+----------------+
+| sale_id | customer_name | product    | quantity | price_per_unit |
++---------+---------------+------------+----------+----------------+
+|       1 | John          | Laptop     |        1 |         700.00 |
+|       2 | Alice         | Smartphone |        2 |         300.00 |
+|       3 | Bob           | Laptop     |        1 |         700.00 |
+|       4 | John          | Tablet     |        3 |         200.00 |
+|       5 | Alice         | Laptop     |        1 |         700.00 |
++---------+---------------+------------+----------+----------------+
+
+
+updating the table will update the view automatically which is the real use of the view
+
+Indexes in MySQL
+
+index(B tree data structure)
+
+indexes are used to find values within a specific column more quickly
+MySQL normally searches sequentially through column 
+the longer the column the more expensive the operation is
+after using indexes, update takes more time, select takes less time
+
+CREATE TABLE students (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    age INT,
+    course VARCHAR(50)
+);
+INSERT INTO students (student_id, name, email, age, course) VALUES
+(1, 'Alice',   'alice@example.com',   20, 'CS'),
+(2, 'Bob',     'bob@example.com',     22, 'IT'),
+(3, 'Charlie', 'charlie@example.com', 21, 'CS'),
+(4, 'David',   'david@example.com',   23, 'ECE'),
+(5, 'Eva',     'eva@example.com',     20, 'IT'),
+(6, 'Frank',   'frank@example.com',   22, 'ECE'),
+(7, 'Grace',   'grace@example.com',   21, 'CS'),
+(8, 'Hannah',  'hannah@example.com',  23, 'IT'),
+(9, 'Ian',     'ian@example.com',     24, 'CS'),
+(10, 'Jane',   'jane@example.com',    20, 'ECE');
+
+
+//displaying indexes for a table 
+
+show indexes  from students;
+
++----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table    | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| students |          0 | PRIMARY  |            1 | student_id  | A         |           8 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
++----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+
+here sid is primary key therefore index is a primary key by default if a table has no key then no one is the index
+
+//
+creating an index on column course as we want to search thing wrt to course and not student id
+
+create index index_name_course_index on 
+students(course);
+show indexes  from students;
+
++----------+------------+-------------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table    | Non_unique | Key_name                | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++----------+------------+-------------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| students |          0 | PRIMARY                 |            1 | student_id  | A         |          10 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| students |          1 | index_name_course_index |            1 | course      | A         |           3 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++----------+------------+-------------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+
+
+now because we created an index on course searching wrt course will become faster comaperd to previous
+
+select * from students where course='CS';
+
+Output:
+
++------------+---------+---------------------+------+--------+
+| student_id | name    | email               | age  | course |
++------------+---------+---------------------+------+--------+
+|          1 | Alice   | alice@example.com   |   20 | CS     |
+|          3 | Charlie | charlie@example.com |   21 | CS     |
+|          7 | Grace   | grace@example.com   |   21 | CS     |
+|          9 | Ian     | ian@example.com     |   24 | CS     |
++------------+---------+---------------------+------+--------+
+
+
+Note: in small dbs these things are not noticible but in million rows db these things matter
+
+
+multi column indexes
+
+
+In multi-column indexes, the order of columns matters because MySQL uses a 'leftmost prefix' strategy (left bias)."
+
+🔍 What does this mean?
+If you create a multi-column index like:
+
+sql
+Copy
+Edit
+CREATE INDEX idx_customer_status ON orders(customer_id, status);
+MySQL can efficiently use this index for queries like:
+
+✅ WHERE customer_id = 1
+
+✅ WHERE customer_id = 1 AND status = 'shipped'
+
+✅ WHERE customer_id = 1 AND status LIKE 'sh%'
+
+But not for:
+
+❌ WHERE status = 'shipped' (index won't be used)
+
+❌ WHERE status = 'shipped' AND customer_id = 1 (index may not be used efficiently because status is not first)
+
+🧠 Why?
+Because MySQL only uses the index if the first column(s) in the index are specified in the query’s WHERE clause — this is the leftmost prefix rule.
+
+Would you like to test some EXPLAIN queries to see this in action?
+
+
+CREATE TABLE orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    product_id INT NOT NULL,
+    order_date DATE NOT NULL,
+    quantity INT DEFAULT 1,
+    status VARCHAR(20));
+
+
+INSERT INTO orders (customer_id, product_id, order_date, quantity, status) VALUES
+(1, 101, '2025-05-01', 2, 'shipped'),
+(2, 103, '2025-05-02', 1, 'pending'),
+(1, 102, '2025-05-02', 3, 'shipped'),
+(3, 101, '2025-05-03', 1, 'cancelled'),
+(1, 101, '2025-05-03', 1, 'pending'),
+(2, 102, '2025-05-03', 2, 'shipped'),
+(4, 104, '2025-05-04', 5, 'shipped'),
+(3, 101, '2025-05-04', 1, 'shipped'),
+(2, 103, '2025-05-05', 1, 'pending');
+
+create index c on orders(customer_id,status);
+
+show indexes from orders;
+
+
+
+
+Output:
+
++--------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table  | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++--------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| orders |          0 | PRIMARY  |            1 | order_id    | A         |           9 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| orders |          1 | c        |            1 | customer_id | A         |           4 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| orders |          1 | c        |            2 | status      | A         |           7 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++--------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+
+
+
+As you can see in the table that 3 indexes are created one is of primary key and two are the ones that we created
+
+They are basically used when we are searching in two or more columns basically works like how normal work 
+
+
+subquery is a query within a query
+
+Here is the sample question and dataset
+
+CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    department VARCHAR(50),
+    salary INT
+);
+
+
+INSERT INTO employees (emp_id, emp_name, department, salary) VALUES
+(1, 'Alice', 'HR', 60000),
+(2, 'Bob', 'IT', 80000),
+(3, 'Charlie', 'IT', 70000),
+(4, 'Diana', 'HR', 75000),
+(5, 'Eve', 'Sales', 65000),
+(6, 'Frank', 'Sales', 60000);
+
+
+-- Find all employees whose salary is 
+-- greater than the average salary of 
+-- their department.
+
+
+SELECT *
+FROM employees e1
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM employees e2
+    WHERE e1.department = e2.department
+);
+
+
+here basically finding avg is the subquery
+
+
+select distinct * from table : will return values without any duplicates
+
+
+group by : aggregate all rows by a specific column
+ oftern used with aggregate function like avg() min() max() count() sum()
+
+CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    department VARCHAR(50),
+    salary INT
+);
+
+
+INSERT INTO employees (emp_id, emp_name, department, salary) VALUES
+(1, 'Alice', 'HR', 60000),
+(2, 'Bob', 'IT', 80000),
+(3, 'Charlie', 'IT', 70000),
+(4, 'Diana', 'HR', 75000),
+(5, 'Eve', 'Sales', 65000),
+(6, 'Frank', 'Sales', 60000);
+
+
+-- finding the salary wrt department
+
+select department,sum(salary) from employees
+group by department;
+
+Output:
+
++------------+-------------+
+| department | sum(salary) |
++------------+-------------+
+| HR         |      135000 |
+| IT         |      150000 |
+| Sales      |      125000 |
++------------+-------------+
+
+
+we got total salry of employees of that particular department
+
+
+for averge salary
+
+Output:
+
++------------+-------------+
+| department | avg(salary) |
++------------+-------------+
+| HR         |  67500.0000 |
+| IT         |  75000.0000 |
+| Sales      |  62500.0000 |
++------------+-------------+
+
+where condition clause doesn't work with group by 
+so having is used instead
+
+
+select department,avg(salary) from employees
+group by department
+having salary > 60000
+;
+
+
+this wont work either because you have to use an aggregated value after having means after having there will always be an aggregation function
+
+and having cluse sould match with eveyry row in that gourp as in this example 
+
+
+select department,avg(salary) from employees
+group by department
+having min(salary) > 60000
+;
+
+Output:
+
++------------+-------------+
+| department | avg(salary) |
++------------+-------------+
+| IT         |  75000.0000 |
++------------+-------------+
+
+
+only all rows in IT dept qualify having clause thas why only IT depattment is shown
+
+
+
+select department,avg(salary) from employees
+group by department
+having min(salary) >= 60000
+;
+
+Output:
+
++------------+-------------+
+| department | avg(salary) |
++------------+-------------+
+| HR         |  67500.0000 |
+| IT         |  75000.0000 |
+| Sales      |  62500.0000 |
++------------+-------------+
+
+here all rows qualify having cluse
+
+after aggregation function we can use anything but it has to be the column that we arte selecting 
+
+select department,avg(salary) from employees
+group by department
+having min(salary) >= 60000 and department='HR'
+;
+
+means here inly department and salary can be after aggregation function 
+
+
+
+roll up clause
+
+it is an extension of the group by clause 
+it produces another row and shows the grand total (super aggregate value)
+
+CREATE TABLE sales (
+    region VARCHAR(50),
+    product VARCHAR(50),
+    revenue INT
+);
+
+INSERT INTO sales (region, product, revenue) VALUES
+('North', 'Apples', 100),
+('North', 'Bananas', 150),
+('South', 'Apples', 120),
+('South', 'Bananas', 180),
+('East',  'Apples', 90),
+('East',  'Bananas', 110);
+
+SELECT region ,SUM(revenue)from sales
+GROUP BY region;
+
+
+Note: group by can work without aggregate functions btw
+
+
+Rollup adds the grouped in the row
+
+SELECT region ,SUM(revenue) from sales
+GROUP BY region
+WITH  ROLLUP;
+
+Output:
+
++--------+--------------+
+| region | SUM(revenue) |
++--------+--------------+
+| East   |          200 |
+| North  |          250 |
+| South  |          300 |
+| NULL   |          750 |
++--------+--------------+
+
+SELECT 
+    IFNULL(region, 'Total') AS region,
+    SUM(revenue) AS total_revenue
+FROM sales
+GROUP BY region WITH ROLLUP;
+
+Output:
+
++--------+---------------+
+| region | total_revenue |
++--------+---------------+
+| East   |           200 |
+| North  |           250 |
+| South  |           300 |
+| Total  |           750 |
++--------+---------------+
+We used ISNULL fuction just to show total instead of null
+
+
+
+ON DELETE
+
+--- ON DELETE SET NULL  When a FK is deleted replace FK with null
+
+CREATE TABLE departments (
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(50)
+);
+
+
+CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    dept_id INT,
+    FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+        ON DELETE SET NULL
+);
+
+Here we have set the FK on on delete set null therefore if a record from the table that we have taken its PK into this table as FK is deleted then set all the rows dept_id column on null
+
+select * from employees; 
+DELETE FROM departments WHERE dept_id = 2;
+select * from employees; 
+
+Output:
+
++--------+----------+---------+
+| emp_id | emp_name | dept_id |
++--------+----------+---------+
+|    101 | Alice    |       1 |
+|    102 | Bob      |       2 |
+|    103 | Charlie  |       2 |
++--------+----------+---------+
++--------+----------+---------+
+| emp_id | emp_name | dept_id |
++--------+----------+---------+
+|    101 | Alice    |       1 |
+|    102 | Bob      |    NULL |
+|    103 | Charlie  |    NULL |
++--------+----------+---------+
+
+
+
+--- ON DELETE CASCADE	When FK is deleted , delete that entire record
+
+cascade is same just it deletes those rows
+
+
+CREATE TABLE departments (
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(50)
+);
+
+CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    dept_id INT,
+    FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+        ON DELETE CASCADE
+);
+INSERT INTO departments VALUES (1, 'HR'), (2, 'IT');
+
+INSERT INTO employees VALUES
+(101, 'Alice', 1),
+(102, 'Bob', 2),
+(103, 'Charlie', 2);
+
+
+select * from employees; 
+DELETE FROM departments WHERE dept_id = 2;
+select * from employees; 
+
+
+Output:
+
++--------+----------+---------+
+| emp_id | emp_name | dept_id |
++--------+----------+---------+
+|    101 | Alice    |       1 |
+|    102 | Bob      |       2 |
+|    103 | Charlie  |       2 |
++--------+----------+---------+
++--------+----------+---------+
+| emp_id | emp_name | dept_id |
++--------+----------+---------+
+|    101 | Alice    |       1 |
++--------+----------+---------+
+
+
+
+Why this is used: because we are taking FK from a table , updating that table wont be allowd as it will violet FK constraint if permitted which SQL wont it will lead to data loss thats why such ting is used
+
+take this as an example
+
+if a teacher leaves the college as teachers pk is foreign in student table SQL wont let us delete that teacher as it will violate FK constraint if we use ON DELETE SET NULL it will set FK value in student table to null after we delete record from teachers table 
+
+always remember this constraint is used on the table that will get affected menas the table that is borrowing the primary of another table as a  foreign key
+
+
+
+Procedures in SQL:
+
+prepared SQL code that can be used again and again : basically like a function
+
+CREATE TABLE sales (
+    region VARCHAR(50),
+    product VARCHAR(50),
+    revenue INT
+);
+
+INSERT INTO sales (region, product, revenue) VALUES
+('North', 'Apples', 100),
+('North', 'Bananas', 150),
+('South', 'Apples', 120),
+('South', 'Bananas', 180),
+('East',  'Apples', 90),
+('East',  'Bananas', 110);
+
+
+CREATE PROCEDURE pro_name()
+BEGIN
+SELECT * FROM sales;
+END;
+
+THis wont work as SQL doesn't know the delemiter(;) whether to stop after slect or stop after end
+
+therefore we have to change deleimeter too $$ (you can change t oanything\)
+
+
+
+DELIMITER &&
+CREATE PROCEDURE pro_name()
+BEGIN
+  SELECT * FROM sales;
+END &&
+DELIMITER ;
+
+CALL pro_name() // to call the fuction
+
+
+to drop a procedure
+
+drop procedure pro_name; not pro_name() btw
+
+
+
+passing arguments to procedure
+
+CREATE PROCEDURE find_by_region(IN r varchar(30))
+ we can pass multipe arguments as well
+
+DELIMITER &&
+
+CREATE PROCEDURE find_by_region(IN r varchar(30))
+BEGIN
+  SELECT * from sales
+  where region=r;
+END &&
+
+DELIMITER ;
+
+CALL find_by_region("NORTH");
+CALL find_by_region("SOUTH");
+CALL find_by_region("EAST");
+
+
+Output:
+
++--------+---------+---------+
+| region | product | revenue |
++--------+---------+---------+
+| North  | Apples  |     100 |
+| North  | Bananas |     150 |
++--------+---------+---------+
++--------+---------+---------+
+| region | product | revenue |
++--------+---------+---------+
+| South  | Apples  |     120 |
+| South  | Bananas |     180 |
++--------+---------+---------+
++--------+---------+---------+
+| region | product | revenue |
++--------+---------+---------+
+| East   | Apples  |      90 |
+| East   | Bananas |     110 |
++--------+---------+---------+
+
+
+multiple args: CREATE PROCEDURE find_by_region(IN r varchar(30), IN a int, IN c DOUBLE)
+Everythime you have to put IN
+
+
+
+
+My sql triggers
+
+when a =n event occurs trigger does an operation like insert dlete update etc 
+it is used to check data, handle errors auditing tables , etc
+
+
+CREATE TABLE sales (
+    region VARCHAR(50),
+    product VARCHAR(50),
+    revenue INT
+);
+
+
+CREATE TABLE sales_log (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    region VARCHAR(50),
+    product VARCHAR(50),
+    revenue INT,
+    log_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+DELIMITER $$
+
+CREATE TRIGGER after_sales_insert
+AFTER INSERT ON sales
+FOR EACH ROW
+BEGIN
+    INSERT INTO sales_log (region, product, revenue)
+    VALUES (NEW.region, NEW.product, NEW.revenue);
+END $$
+
+DELIMITER ;
+
+
+INSERT INTO sales (region, product, revenue)
+VALUES ('West', 'Grapes', 130);
+
+
+SELECT * FROM sales_log;
+
+
+
+WE CAN USE BEFORE INSTEAD OF AFTER ALSO AND WE CAN CHANGE EACH ROW TO SPECIFIC ROW TOO
+

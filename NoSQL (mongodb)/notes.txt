@@ -1,0 +1,1674 @@
+Creating a cloud database (mongodb atlas)
+-create a database-create a cluster-open that cluster to all ips-choose server and create deployment
+-after that it will give you a string to connect it from mongosh that you have locally installed
+
+mongosh "mongodb+srv://cluster0.ats1f4y.mongodb.net/" --apiVersion 1 --username kedardamale --password vRlI02tvohKl50GJ
+
+displaying all the databases available
+Atlas atlas-sbkflh-shard-0 [primary] test> show dbs
+admin  296.00 KiB
+local   43.41 GiB
+
+creating / using a database
+
+Atlas atlas-sbkflh-shard-0 [primary] test> use kedar
+switched to db kedar
+Atlas atlas-sbkflh-shard-0 [primary] kedar> show dbs
+admin  296.00 KiB
+local   43.41 GiB
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+Here databses will only be displayed after there is something in them and mongodb implicitly creatres database from the name that you given there is no create command
+
+Creating a collection with db.createCollection("collection_name")
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.createCollection("Students")
+{ ok: 1 }
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+
+as we created a collection in out db now it will be shown on show dbsAtlas atlas-sbkflh-shard-0 [primary] kedar> show dbs
+
+kedar    8.00 KiB
+admin  296.00 KiB
+local   43.41 GiB
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+To delete the database you have to be in that database and use db.dropDatabase()
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.dropDatabase()
+{ ok: 1, dropped: 'kedar' }
+Atlas atlas-sbkflh-shard-0 [primary] kedar> show dbs
+admin  296.00 KiB
+local   43.41 GiB
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+Again creating kedar databse 
+Atlas atlas-sbkflh-shard-0 [primary] kedar> use kedar
+already on db kedar
+
+Inserting a document in a collection with db.collection_name.insertOne({}) and db.collection_name.insertMany([{},{},{},{}])
+if collection_name is not presenttin the dab mongodb will create one for you automatically
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.students.insertOne({name:"Kedar",age:20})
+{
+  acknowledged: true,
+  insertedId: ObjectId('68160ae747c70c26cfb5f899')
+}
+
+if one or more docs ar give in insertOne then it will take the first doc wiont throw erreo
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.students.insertOne({name:"Kanchan",age:26},{name:"Pravin",age:53},{name:"Priya",age:50})
+{
+  acknowledged: true,
+  insertedId: ObjectId('68160b9c47c70c26cfb5f89a')
+}
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.students.find()
+[
+  { _id: ObjectId('68160ae747c70c26cfb5f899'), name: 'Kedar', age: 20 },
+  {
+    _id: ObjectId('68160b9c47c70c26cfb5f89a'),
+    name: 'Kanchan',
+    age: 26
+  }
+]
+
+To insert multiple documents at once an array of documents are given to insertMany method,
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.students.insertMany([{name:"Pravin",age:53},{name:"Priya",age:50}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('68160c1347c70c26cfb5f89b'),
+    '1': ObjectId('68160c1347c70c26cfb5f89c')
+  }
+}
+
+to get all the records use find() method db.collection_name.find()
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.students.find()
+[
+  { _id: ObjectId('68160ae747c70c26cfb5f899'), name: 'Kedar', age: 20 },
+  {
+    _id: ObjectId('68160b9c47c70c26cfb5f89a'),
+    name: 'Kanchan',
+    age: 26
+  },
+  {
+    _id: ObjectId('68160c1347c70c26cfb5f89b'),
+    name: 'Pravin',
+    age: 53
+  },
+  { _id: ObjectId('68160c1347c70c26cfb5f89c'), name: 'Priya', age: 50 }
+]
+
+Imp: Documents can contain any number of field value pairs any there is no schema
+
+Datatypes in mongodb
+
+MongoDB is a NoSQL database that stores data in a flexible, JSON-like format called **BSON** (Binary JSON). BSON supports a wide variety of **data types**, some of which directly correspond to common JSON types, while others are specific to BSON and MongoDB.
+
+Here’s a **detailed explanation** of the key MongoDB (BSON) data types:
+
+---
+
+## 🔹 1. **String (`string`)**
+
+* The most commonly used data type.
+* Must be UTF-8 encoded.
+* Similar to strings in other languages.
+
+```json
+{ "name": "Kedar" }
+```
+
+---
+
+## 🔹 2. **Integer (`int32`, `int64`)**
+
+* **`int32`**: 32-bit signed integer.
+* **`int64`**: 64-bit signed integer.
+* MongoDB automatically chooses based on size, but you can force it using drivers.
+
+```json
+{ "age": 21 }  // Stored as int32
+```
+
+---
+
+## 🔹 3. **Double (`double`)**
+
+* Used to store floating-point numbers (like `float` in other languages).
+
+```json
+{ "price": 99.99 }
+```
+
+---
+
+## 🔹 4. **Boolean (`bool`)**
+
+* Stores `true` or `false`.
+
+```json
+{ "isStudent": true }
+```
+
+---
+
+## 🔹 5. **Null (`null`)**
+
+* Used to represent `null` values or missing fields.
+
+```json
+{ "middleName": null }
+```
+
+---
+
+## 🔹 6. **Array (`array`)**
+
+* Stores an ordered list of values.
+* Can contain mixed types (e.g., string, int, object, etc.).
+
+```json
+{ "skills": ["Python", "MongoDB", "C++"] }
+```
+
+---
+
+## 🔹 7. **Object (`embedded document`)**
+
+* Similar to JSON objects or dictionaries.
+* Can store nested fields.
+
+```json
+{
+  "address": {
+    "city": "Pune",
+    "pin": 411001
+  }
+}
+```
+
+---
+
+## 🔹 8. **ObjectId (`objectId`)**
+
+* A unique 12-byte identifier used as the default `_id` field.
+* Structure:
+
+  * 4 bytes: timestamp
+  * 5 bytes: machine ID and process ID
+  * 3 bytes: counter
+
+```json
+{ "_id": ObjectId("661aefce2c987f9a1e2e839c") }
+```
+
+---
+
+## 🔹 9. **Date (`date`)**
+
+* Stores current or custom date-time.
+* Stored as milliseconds since Unix epoch.
+
+```json
+{ "joined": ISODate("2025-05-03T10:00:00Z") }
+```
+
+---
+
+## 🔹 10. **Timestamp (`timestamp`)**
+
+* Internal MongoDB type used for replication, not for general use.
+* More precise than `date`.
+
+```json
+{ "createdAt": Timestamp(1681234567, 1) }
+```
+
+---
+
+## 🔹 11. **Binary Data (`binData`)**
+
+* Used to store binary data like images, files, encrypted content.
+
+```json
+{ "file": BinData(0, "SGVsbG8sIFdvcmxkIQ==") }
+```
+
+---
+
+## 🔹 12. **Regular Expression (`regex`)**
+
+* Stores regex patterns for pattern matching.
+
+```json
+{ "name": { "$regex": "^Ked", "$options": "i" } }
+```
+
+---
+
+## 🔹 13. **JavaScript Code (`javascript`)**
+
+* Can store JavaScript code as a value (rarely used).
+
+```json
+{ "script": Code("function() { return true; }") }
+```
+
+---
+
+## 🔹 14. **JavaScript with Scope (`javascriptWithScope`)**
+
+* Like the above, but with local variables.
+
+```json
+{
+  "script": Code("function(x) { return x + y; }", { "y": 5 })
+}
+```
+
+---
+
+## 🔹 15. **Decimal128 (`decimal`)**
+
+* High-precision decimal for financial and scientific calculations.
+
+```json
+{ "price": NumberDecimal("123456.789") }
+```
+
+---
+
+## 🔹 16. **MinKey and MaxKey**
+
+* Special types used in comparisons:
+
+  * `MinKey`: lowest possible value.
+  * `MaxKey`: highest possible value.
+
+```json
+{ "value": MinKey() }
+```
+
+---
+
+## 🔹 17. **Undefined (deprecated)**
+
+* Previously used to represent undefined values, now deprecated.
+
+---
+
+### 📌 Summary Table
+
+| BSON Type Name      | Description              | Example                       |
+| ------------------- | ------------------------ | ----------------------------- |
+| `string`            | Text values              | `"name": "Kedar"`             |
+| `int32`, `int64`    | Integers (32-bit/64-bit) | `"age": 21`                   |
+| `double`            | Floating-point number    | `"price": 99.99`              |
+| `boolean`           | `true` or `false`        | `"isActive": true`            |
+| `null`              | Null value               | `"middle": null`              |
+| `array`             | Ordered list of values   | `"skills": ["Python", "JS"]`  |
+| `object`            | Nested document          | `"address": {...}`            |
+| `objectId`          | Unique identifier        | `"_id": ObjectId(...)`        |
+| `date`              | Date and time            | `"joined": ISODate(...)`      |
+| `timestamp`         | Internal timestamp       | `"createdAt": Timestamp(...)` |
+| `binData`           | Binary content           | `"image": BinData(...)`       |
+| `regex`             | Regular expression       | `"name": { "$regex": "^A" }`  |
+| `javascript`        | JavaScript code          | `Code("...")`                 |
+| `decimal`           | High-precision decimal   | `NumberDecimal("1234.56")`    |
+| `minKey` / `maxKey` | For range comparisons    | `MinKey()`, `MaxKey()`        |
+
+---
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.students.insertOne({name:"kedar",age:20,
+                                                                cgpa:8.96,student:true,
+                                                                reg_date:new Date(),
+                                                                graduated:null,
+                                                                course:["DMBI","AIDS","WT"],
+                                                                address:{building:"VPA",street:"TilakLane",city:"Rtn"}})
+
+{
+  acknowledged: true,
+  insertedId: ObjectId('68160f6547c70c26cfb5f89d')
+}
+
+
+to return all douments, db.collection_name.find()
+
+to sort the document use .sort() after find() sort method takes a document with one field value pait in which from which column we want to sort and ascending or descending
+
+If you call the .sort() method in MongoDB without any arguments, it won’t sort anything at all means documents will be displayed as they are Stored
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find().sort()
+[
+  {
+    _id: 1,
+    name: 'Aarav Sharma',
+    age: 20,
+    department: 'Computer Science',
+    gpa: 8.5,
+    skills: [ 'Python', 'MongoDB', 'Git' ],
+    isPlaced: false
+  },
+  {
+    _id: 2,
+    name: 'Meera Desai',
+    age: 21,
+    department: 'Information Technology',
+    gpa: 9.1,
+    skills: [ 'JavaScript', 'React', 'MongoDB' ],
+    isPlaced: true
+  },
+  {
+    _id: 3,
+    name: 'Rohan Patil',
+    age: 19,
+    department: 'Electronics',
+    gpa: 7.8,
+    skills: [ 'C', 'Embedded C', 'MATLAB' ],
+    isPlaced: false
+  },
+  {
+    _id: 4,
+    name: 'Simran Kaur',
+    age: 22,
+    department: 'Computer Science',
+    gpa: 9.4,
+    skills: [ 'Python', 'Machine Learning', 'MongoDB' ],
+    isPlaced: true
+  },
+  {
+    _id: 5,
+    name: 'Tanishq Gupta',
+    age: 20,
+    department: 'Mechanical',
+    gpa: 7.2,
+    skills: [ 'AutoCAD', 'ANSYS' ],
+    isPlaced: false
+  },
+  {
+    _id: 6,
+    name: 'Priya Nair',
+    age: 21,
+    department: 'Computer Science',
+    gpa: 8.7,
+    skills: [ 'HTML', 'CSS', 'JavaScript' ],
+    isPlaced: true
+  },
+  {
+    _id: 7,
+    name: 'Kunal Joshi',
+    age: 22,
+    department: 'Information Technology',
+    gpa: 6.9,
+    skills: [ 'SQL', 'Java' ],
+    isPlaced: false
+  },
+  {
+    _id: 8,
+    name: 'Ishita Mehta',
+    age: 20,
+    department: 'Computer Science',
+    gpa: 8.3,
+    skills: [ 'MongoDB', 'Node.js', 'Express' ],
+    isPlaced: true
+  },
+  {
+    _id: 9,
+    name: 'Raj Verma',
+    age: 23,
+    department: 'Electronics',
+    gpa: 7.5,
+    skills: [ 'Verilog', 'VHDL', 'Python' ],
+    isPlaced: false
+  },
+  {
+    _id: 10,
+    name: 'Ananya Kulkarni',
+    age: 21,
+    department: 'Computer Science',
+    gpa: 9.2,
+    skills: [ 'Java', 'Spring', 'MongoDB' ],
+    isPlaced: true
+  }
+]
+
+To sort based on gpa and ascending order,
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find().sort({gpa:1})
+[
+  {
+    _id: 7,
+    name: 'Kunal Joshi',
+    age: 22,
+    department: 'Information Technology',
+    gpa: 6.9,
+    skills: [ 'SQL', 'Java' ],
+    isPlaced: false
+  },
+  {
+    _id: 5,
+    name: 'Tanishq Gupta',
+    age: 20,
+    department: 'Mechanical',
+    gpa: 7.2,
+    skills: [ 'AutoCAD', 'ANSYS' ],
+    isPlaced: false
+  },
+  {
+    _id: 9,
+    name: 'Raj Verma',
+    age: 23,
+    department: 'Electronics',
+    gpa: 7.5,
+    skills: [ 'Verilog', 'VHDL', 'Python' ],
+    isPlaced: false
+  },
+  {
+    _id: 3,
+    name: 'Rohan Patil',
+    age: 19,
+    department: 'Electronics',
+    gpa: 7.8,
+    skills: [ 'C', 'Embedded C', 'MATLAB' ],
+    isPlaced: false
+  },
+  {
+    _id: 8,
+    name: 'Ishita Mehta',
+    age: 20,
+    department: 'Computer Science',
+    gpa: 8.3,
+    skills: [ 'MongoDB', 'Node.js', 'Express' ],
+    isPlaced: true
+  },
+  {
+    _id: 1,
+    name: 'Aarav Sharma',
+    age: 20,
+    department: 'Computer Science',
+    gpa: 8.5,
+    skills: [ 'Python', 'MongoDB', 'Git' ],
+    isPlaced: false
+  },
+  {
+    _id: 6,
+    name: 'Priya Nair',
+    age: 21,
+    department: 'Computer Science',
+    gpa: 8.7,
+    skills: [ 'HTML', 'CSS', 'JavaScript' ],
+    isPlaced: true
+  },
+  {
+    _id: 2,
+    name: 'Meera Desai',
+    age: 21,
+    department: 'Information Technology',
+    gpa: 9.1,
+    skills: [ 'JavaScript', 'React', 'MongoDB' ],
+    isPlaced: true
+  },
+  {
+    _id: 10,
+    name: 'Ananya Kulkarni',
+    age: 21,
+    department: 'Computer Science',
+    gpa: 9.2,
+    skills: [ 'Java', 'Spring', 'MongoDB' ],
+    isPlaced: true
+  },
+  {
+    _id: 4,
+    name: 'Simran Kaur',
+    age: 22,
+    department: 'Computer Science',
+    gpa: 9.4,
+    skills: [ 'Python', 'Machine Learning', 'MongoDB' ],
+    isPlaced: true
+  }
+]
+
+sort took a doc as an argument in which field represents the on which sort will happen and 1 (asc) and -1 (dsc)
+if the doc doesnt contain the sorting field then, 
+🔷 Behavior:
+Documents without the sort field are treated as if that field has the value null.
+
+When sorting in ascending order (1), documents with missing fields come first.
+
+When sorting in descending order (-1), those documents come last.
+
+on string values sorting will happen depends on alphabetical order
+
+
+limit method will display the amount on records accorinf to argument that has given
+here 
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find().limit(5)
+[
+  {
+    _id: 1,
+    name: 'Aarav Sharma',
+    age: 20,
+    department: 'Computer Science',
+    gpa: 8.5,
+    skills: [ 'Python', 'MongoDB', 'Git' ],
+    isPlaced: false
+  },
+  {
+    _id: 2,
+    name: 'Meera Desai',
+    age: 21,
+    department: 'Information Technology',
+    gpa: 9.1,
+    skills: [ 'JavaScript', 'React', 'MongoDB' ],
+    isPlaced: true
+  },
+  {
+    _id: 3,
+    name: 'Rohan Patil',
+    age: 19,
+    department: 'Electronics',
+    gpa: 7.8,
+    skills: [ 'C', 'Embedded C', 'MATLAB' ],
+    isPlaced: false
+  },
+  {
+    _id: 4,
+    name: 'Simran Kaur',
+    age: 22,
+    department: 'Computer Science',
+    gpa: 9.4,
+    skills: [ 'Python', 'Machine Learning', 'MongoDB' ],
+    isPlaced: true
+  },
+  {
+    _id: 5,
+    name: 'Tanishq Gupta',
+    age: 20,
+    department: 'Mechanical',
+    gpa: 7.2,
+    skills: [ 'AutoCAD', 'ANSYS' ],
+    isPlaced: false
+  }
+]
+This will only display 5 documents 
+
+to get a person with highrst gpa,
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find().sort({gpa:-1}).limit(1)
+[
+  {
+    _id: 4,
+    name: 'Simran Kaur',
+    age: 22,
+    department: 'Computer Science',
+    gpa: 9.4,
+    skills: [ 'Python', 'Machine Learning', 'MongoDB' ],
+    isPlaced: true
+  }
+]
+
+and lowest gpa,
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find().sort({gpa:1}).limit(1)
+[
+  {
+    _id: 7,
+    name: 'Kunal Joshi',
+    age: 22,
+    department: 'Information Technology',
+    gpa: 6.9,
+    skills: [ 'SQL', 'Java' ],
+    isPlaced: false
+  }
+]
+
+we sorted them asc and dsc and returned only top doc using limit , such chaing is called function or method chaining in mongodb
+
+
+find method tkaes 2 optional arguments
+db.collection.find(query, projection)
+
+Query argument to find a student with name Tanishque Gupta
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({name:"Tanishq Gupta"})
+[
+  {
+    _id: 5,
+    name: 'Tanishq Gupta',
+    age: 20,
+    department: 'Mechanical',
+    gpa: 7.2,
+    skills: [ 'AutoCAD', 'ANSYS' ],
+    isPlaced: false
+  }
+]
+
+multiple queries (comma separated)
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({name:"Tanishq Gupta",age:20})
+[
+  {
+    _id: 5,
+    name: 'Tanishq Gupta',
+    age: 20,
+    department: 'Mechanical',
+    gpa: 7.2,
+    skills: [ 'AutoCAD', 'ANSYS' ],
+    isPlaced: false
+  }
+]
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+projection: give the field name and :true for those 
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({name:"Tanishq Gupta"},{name:true})
+[ { _id: 5, name: 'Tanishq Gupta' } ]
+
+if no query is mentoined it would have returned all docs
+
+
+mongodb will give _id regardless so if you dont want it just put false
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({name:"Tanishq Gupta"},{name:true,_id:false})
+[ { name: 'Tanishq Gupta' } ]
+
+as you can see order of fields does not matter just name matters
+
+updateing documents
+
+updateOne(filter,update)
+
+filter being what to update
+update being update to what
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.updateOne({name:"Tanishq Gupta"},{$set:{name:"Kedar Damale"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({name:"Kedar Damale"},{name:true,_id:false})
+[ { name: 'Kedar Damale' } ]
+
+$-- is an operator 
+
+| Operator       | Description                                                                  |
+| -------------- | ---------------------------------------------------------------------------- |
+| `$set`         | Sets the value of a field. Creates the field if it doesn't exist.            |
+| `$unset`       | Removes the specified field from the document.                               |
+| `$inc`         | Increments the value of a field by a specified amount.                       |
+| `$mul`         | Multiplies the value of a field by a specified number.                       |
+| `$rename`      | Renames a field.                                                             |
+| `$min`         | Only updates the field if the new value is **less than** the current one.    |
+| `$max`         | Only updates the field if the new value is **greater than** the current one. |
+| `$currentDate` | Sets the value of a field to the current date.                               |
+
+🔍 Examples:
+$unset:
+
+js
+Copy
+Edit
+db.kedar.updateOne({ name: "Kedar Damale" }, { $unset: { age: "" } })
+→ Removes the age field from the document.
+
+$inc:
+
+js
+Copy
+Edit
+db.kedar.updateOne({ name: "Kedar Damale" }, { $inc: { age: 1 } })
+→ Increments age by 1.
+
+$mul:
+
+js
+Copy
+Edit
+db.kedar.updateOne({ name: "Kedar Damale" }, { $mul: { gpa: 1.1 } })
+→ Multiplies gpa by 1.1.
+
+$rename:
+
+js
+Copy
+Edit
+db.kedar.updateOne({}, { $rename: { "fullName": "name" } })
+→ Renames fullName to name.
+
+$currentDate:
+
+js
+Copy
+Edit
+db.kedar.updateOne({ name: "Kedar Damale" }, { $currentDate: { updatedAt: true } })
+→ Adds a new updatedAt field with the current date/time.
+
+to update thing it should be done by id(you can specify _id while inserting if not mongodb will assign it automaticallt) as there can be various people wit hupdating parameter
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.updateOne({_id:5},{$set:{name:"Kedar"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({_id:5})
+[
+  {
+    _id: 5,
+    name: 'Kedar',
+    age: 20,
+    department: 'Mechanical',
+    gpa: 7.2,
+    skills: [ 'AutoCAD', 'ANSYS' ],
+    isPlaced: false
+  }
+]
+
+deleting a field using unset
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.updateOne({_id:5},{$unset:{isPlaced:""}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({_id:5})
+[
+  {
+    _id: 5,
+    name: 'Kedar',
+    age: 20,
+    department: 'Mechanical',
+    gpa: 7.2,
+    skills: [ 'AutoCAD', 'ANSYS' ]
+  }
+]
+
+updateMany(filter,update)
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.updateMany({},{$set:{grad_year:2026}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 10,
+  modifiedCount: 10,
+  upsertedCount: 0
+}
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find()
+[
+  {
+    _id: 1,
+    name: 'Aarav Sharma',
+    age: 20,
+    department: 'Computer Science',
+    gpa: 8.5,
+    skills: [ 'Python', 'MongoDB', 'Git' ],
+    isPlaced: false,
+    grad_year: 2026
+  },
+  {
+    _id: 2,
+    name: 'Meera Desai',
+    age: 21,
+    department: 'Information Technology',
+    gpa: 9.1,
+    skills: [ 'JavaScript', 'React', 'MongoDB' ],
+    isPlaced: true,
+    grad_year: 2026
+  },
+  {
+    _id: 3,
+    name: 'Rohan Patil',
+    age: 19,
+    department: 'Electronics',
+    gpa: 7.8,
+    skills: [ 'C', 'Embedded C', 'MATLAB' ],
+    isPlaced: false,
+    grad_year: 2026
+  },
+  {
+    _id: 4,
+    name: 'Simran Kaur',
+    age: 22,
+    department: 'Computer Science',
+    gpa: 9.4,
+    skills: [ 'Python', 'Machine Learning', 'MongoDB' ],
+    isPlaced: true,
+    grad_year: 2026
+  },
+  {
+    _id: 5,
+    name: 'Kedar',
+    age: 20,
+    department: 'Mechanical',
+    gpa: 7.2,
+    skills: [ 'AutoCAD', 'ANSYS' ],
+    grad_year: 2026
+  },
+  {
+    _id: 6,
+    name: 'Priya Nair',
+    age: 21,
+    department: 'Computer Science',
+    gpa: 8.7,
+    skills: [ 'HTML', 'CSS', 'JavaScript' ],
+    isPlaced: true,
+    grad_year: 2026
+  },
+  {
+    _id: 7,
+    name: 'Kunal Joshi',
+    age: 22,
+    department: 'Information Technology',
+    gpa: 6.9,
+    skills: [ 'SQL', 'Java' ],
+    isPlaced: false,
+    grad_year: 2026
+  },
+  {
+    _id: 8,
+    name: 'Ishita Mehta',
+    age: 20,
+    department: 'Computer Science',
+    gpa: 8.3,
+    skills: [ 'MongoDB', 'Node.js', 'Express' ],
+    isPlaced: true,
+    grad_year: 2026
+  },
+  {
+    _id: 9,
+    name: 'Raj Verma',
+    age: 23,
+    department: 'Electronics',
+    gpa: 7.5,
+    skills: [ 'Verilog', 'VHDL', 'Python' ],
+    isPlaced: false,
+    grad_year: 2026
+  },
+  {
+    _id: 10,
+    name: 'Ananya Kulkarni',
+    age: 21,
+    department: 'Computer Science',
+    gpa: 9.2,
+    skills: [ 'Java', 'Spring', 'MongoDB' ],
+    isPlaced: true,
+    grad_year: 2026
+  }
+]
+
+As you can see we selected every documnet using {} and set grad_year to 2026 as it wasnt present mongodb creatred that
+
+
+now using $exists operator we will check if someone doesnt have that field and this will be our filter and we will add that same field using set
+
+so db.collection_name.updateMany({field_name:{exists:false}},{$set:{fulltime:true}})
+
+OPearators in Mongodb (all are not important ofcourse)
+
+Absolutely! Here's a **complete categorized list of all MongoDB operators**, including **Query**, **Update**, **Projection**, **Aggregation**, **Array**, **Element**, **Bitwise**, **Geospatial**, **Text**, **Expression**, and **Index** operators.
+
+---
+
+## 🟩 1. **Query Operators**
+
+Used in `.find()`, `.deleteOne()`, etc.
+
+### 🔹 Comparison
+
+* `$eq` — Equal
+* `$ne` — Not equal
+* `$gt` — Greater than
+* `$gte` — Greater than or equal
+* `$lt` — Less than
+* `$lte` — Less than or equal
+* `$in` — In array
+* `$nin` — Not in array
+
+### 🔹 Logical
+
+* `$and`
+* `$or`
+* `$nor`
+* `$not`
+
+### 🔹 Element
+
+* `$exists` — Field exists
+* `$type` — Matches BSON type
+
+### 🔹 Evaluation
+
+* `$expr` — Use aggregation expressions in queries
+* `$jsonSchema` — Validate against a schema
+* `$mod` — Modulo
+* `$regex` — Pattern match
+* `$text` — Full-text search
+* `$where` — JavaScript expression (not recommended)
+
+### 🔹 Array
+
+* `$all` — Array contains all elements
+* `$elemMatch` — Array contains element that matches multiple conditions
+* `$size` — Match array size
+
+### 🔹 Bitwise
+
+* `$bitsAllSet`
+* `$bitsAnySet`
+* `$bitsAllClear`
+* `$bitsAnyClear`
+
+---
+
+## 🟦 2. **Update Operators**
+
+Used in `.updateOne()`, `.updateMany()`.
+
+### 🔹 Field
+
+* `$set` — Set value
+* `$unset` — Remove field
+* `$rename` — Rename field
+* `$inc` — Increment
+* `$mul` — Multiply
+* `$min`, `$max` — Conditional update
+* `$currentDate` — Set to current timestamp
+* `$setOnInsert` — Set value only during insert (upsert)
+
+### 🔹 Array
+
+* `$push` — Add element to array
+* `$pop` — Remove first/last
+* `$pull` — Remove elements by condition
+* `$pullAll` — Remove all matching elements
+* `$addToSet` — Add only if not present
+* `$each`, `$slice`, `$sort`, `$position` — Array modifiers (used inside `$push`)
+
+---
+
+## 🟨 3. **Projection Operators**
+
+Used in the second argument of `.find()` to control returned fields.
+
+* `1` / `0` — Include / exclude field
+* `$slice` — Limit array items
+* `$elemMatch` — Project only matching array elements
+* `$meta` — Show metadata like text score
+
+---
+
+## 🟧 4. **Aggregation Pipeline Operators**
+
+Used in `.aggregate([])`.
+
+### 🔹 Stage Operators (start with `$`)
+
+* `$match` — Filter documents
+* `$project` — Choose/reshape fields
+* `$group` — Aggregate values
+* `$sort` — Sort results
+* `$limit`, `$skip` — Limit/skip records
+* `$lookup` — Join another collection
+* `$unwind` — Deconstruct arrays
+* `$facet`, `$bucket`, `$merge`, `$out` — Advanced pipeline tools
+
+### 🔹 Accumulators (used in `$group`)
+
+* `$sum`
+* `$avg`
+* `$min`, `$max`
+* `$push`, `$addToSet`
+* `$first`, `$last`
+* `$count`
+
+### 🔹 Expression Operators (used in `$project`, `$match`, etc.)
+
+* **Arithmetic**: `$add`, `$subtract`, `$multiply`, `$divide`, `$mod`
+* **String**: `$concat`, `$toUpper`, `$toLower`, `$substr`, `$trim`, `$split`, `$regexMatch`
+* **Comparison**: `$eq`, `$ne`, `$gt`, `$lt`, `$gte`, `$lte`, `$cmp`
+* **Date**: `$year`, `$month`, `$dayOfMonth`, `$hour`, `$dateToString`, `$dateFromString`
+* **Conditional**: `$cond`, `$ifNull`, `$switch`, `$coalesce`
+* **Array**: `$size`, `$filter`, `$map`, `$reduce`, `$zip`
+
+---
+
+## 🟥 5. **Geospatial Operators**
+
+* `$geoWithin`, `$geoIntersects`, `$near`, `$nearSphere`
+* `$geometry`, `$center`, `$box`, `$polygon`
+
+---
+
+## 🟪 6. **Text Search Operators**
+
+* `$text` — Enables full-text search
+* `$search`, `$language`, `$caseSensitive`, `$diacriticSensitive`
+
+---
+
+## 🟫 7. **Indexing Operators**
+
+Used when creating indexes:
+
+* `1` / `-1` — Ascending / descending
+* `text` — Text search
+* `2dsphere`, `2d` — Geospatial
+* `hashed` — Hashed index
+* `wildcard`, `compound`, `partial`, `collation`
+
+---
+
+## ✅ Bonus: BSON Types for `$type`
+
+| Type | Alias      |
+| ---- | ---------- |
+| `1`  | `double`   |
+| `2`  | `string`   |
+| `3`  | `object`   |
+| `4`  | `array`    |
+| `5`  | `binData`  |
+| `7`  | `objectId` |
+| `8`  | `bool`     |
+| `9`  | `date`     |
+| `10` | `null`     |
+| `11` | `regex`    |
+
+---
+
+Would you like a **PDF or table cheat sheet** for download?
+
+
+deleteing things using deleteOne and deleteMany
+
+deleteOne or deleteMany take one argument which is a filter
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.deleteOne({gpa:9.2})
+{ acknowledged: true, deletedCount: 1 }
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+for deleteOne deletedcount will always be one
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.deleteMany({age:20})
+{ acknowledged: true, deletedCount: 3 }
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+to delete a document deleteOne or Mnay is used to delete particular field use $unset and pass in empty string {fieldname:""}
+
+
+$ne (not equal)
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({name:{$ne:"Kunal Joshi"}})
+[
+  {
+    _id: 2,
+    name: 'Meera Desai',
+    age: 21,
+    department: 'Information Technology',
+    gpa: 9.1,
+    skills: [ 'JavaScript', 'React', 'MongoDB' ],
+    isPlaced: true,
+    grad_year: 2026
+  },
+  {
+    _id: 3,
+    name: 'Rohan Patil',
+    age: 19,
+    department: 'Electronics',
+    gpa: 7.8,
+    skills: [ 'C', 'Embedded C', 'MATLAB' ],
+    isPlaced: false,
+    grad_year: 2026
+  },
+  {
+    _id: 4,
+    name: 'Simran Kaur',
+    age: 22,
+    department: 'Computer Science',
+    gpa: 9.4,
+    skills: [ 'Python', 'Machine Learning', 'MongoDB' ],
+    isPlaced: true,
+    grad_year: 2026
+  },
+  {
+    _id: 6,
+    name: 'Priya Nair',
+    age: 21,
+    department: 'Computer Science',
+    gpa: 8.7,
+    skills: [ 'HTML', 'CSS', 'JavaScript' ],
+    isPlaced: true,
+    grad_year: 2026
+  }
+]
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+find every thing whose name is "Kunal Joshi"
+
+less than
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({gpa:{$lt:8.7}},{_id:false,name:true})
+[ { name: 'Rohan Patil' }, { name: 'Kunal Joshi' } ]
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+greate than
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({gpa:{$gt:8.7}},{_id:false,name:true})
+[ { name: 'Meera Desai' }, { name: 'Simran Kaur' } ]
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+
+Just to retrieve names
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({gpa:{$gt:8.7}},{_id:false,name:true}).forEach(doc=>print(doc.name))
+Meera Desai
+Simran Kaur
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+Heere are all the methods in mongodb
+
+The list I provided covers the **most commonly used methods** in MongoDB for querying, updating, iterating, and manipulating documents. However, MongoDB has **many more methods and features** to suit different use cases. Here's an extended list with additional methods that could be useful, as well as clarification on some nuances.
+
+### **Additional Methods and Concepts in MongoDB**
+
+#### **1. CRUD Operations (Create, Read, Update, Delete):**
+
+* **`insertOne()`**: Inserts a single document.
+* **`insertMany()`**: Inserts multiple documents.
+* **`updateOne()`**: Updates one document.
+* **`updateMany()`**: Updates multiple documents.
+* **`replaceOne()`**: Replaces a single document.
+* **`find()`**: Retrieves documents.
+* **`findOne()`**: Retrieves a single document.
+* **`deleteOne()`**: Deletes a single document.
+* **`deleteMany()`**: Deletes multiple documents.
+* **`drop()`**: Drops a collection.
+
+#### **2. Cursor Methods (for iteration and handling results):**
+
+* **`toArray()`**: Converts the cursor to an array.
+* **`hasNext()`**: Checks if there are more documents in the cursor.
+* **`next()`**: Retrieves the next document in the cursor.
+* **`forEach()`**: Iterates through each document in the cursor.
+* **`map()`**: Applies a function to each document and returns the results as an array.
+
+#### **3. Query and Aggregation Operators:**
+
+* **`$eq`**: Equal to.
+* **`$gt`**: Greater than.
+* **`$lt`**: Less than.
+* **`$gte`**: Greater than or equal to.
+* **`$lte`**: Less than or equal to.
+* **`$ne`**: Not equal to.
+* **`$in`**: Matches any of the values in the specified array.
+* **`$nin`**: Matches none of the values in the specified array.
+* **`$exists`**: Checks if a field exists.
+* **`$type`**: Matches documents where the field is of the specified type.
+* **`$regex`**: Matches documents where the field value is a regular expression.
+
+#### **4. Aggregation Pipeline Stages:**
+
+* **`$match`**: Filters documents based on a condition.
+* **`$project`**: Reshapes documents (e.g., excluding or including fields).
+* **`$group`**: Groups documents based on a specified identifier and applies aggregation functions like `$sum`, `$avg`, `$count`, etc.
+* **`$sort`**: Sorts the documents.
+* **`$limit`**: Limits the number of documents returned.
+* **`$skip`**: Skips a specified number of documents.
+* **`$unwind`**: Deconstructs an array field to output a document for each element.
+* **`$lookup`**: Performs a left outer join with another collection.
+* **`$addFields`**: Adds new fields to documents.
+* **`$count`**: Counts the number of documents that pass through a stage.
+* **`$out`**: Writes the results of an aggregation pipeline to a new collection.
+
+#### **5. Indexing Methods:**
+
+* **`createIndex()`**: Creates an index on a field or fields.
+* **`dropIndex()`**: Drops an index.
+* **`getIndexes()`**: Lists all indexes for a collection.
+* **`ensureIndex()`** (deprecated): Ensures an index exists for a given field.
+
+#### **6. Geospatial Queries:**
+
+* **`createIndex()`** with `2dsphere` or `2d` options: Creates geospatial indexes for querying geographic data.
+* **`geoWithin()`**: Finds documents within a specified geometry.
+* **`geoIntersects()`**: Finds documents where a geometry intersects another geometry.
+
+#### **7. Transactions (MongoDB 4.0+):**
+
+* **`startSession()`**: Starts a session for transactions.
+* **`withTransaction()`**: Executes a set of operations in a transaction.
+
+#### **8. Other Methods:**
+
+* **`cloneCollection()`**: Creates a copy of a collection.
+* **`mapReduce()`**: Performs map-reduce operations on a collection.
+* **`watch()`**: Watches for changes on a collection (for Change Streams).
+* **`isCapped()`**: Checks if a collection is capped.
+* **`dropDatabase()`**: Drops the current database.
+
+#### **9. Data Validation (MongoDB 3.6+):**
+
+* **`createCollection()`**: Can include validation rules when creating a collection.
+* **`collMod`**: Modifies the configuration of a collection, such as its validation rules.
+
+### **Summary:**
+
+While the list above covers most of the essential methods in MongoDB, it’s important to remember that MongoDB is constantly evolving, and new methods and features are added regularly. The most commonly used methods for everyday operations include `find()`, `insertOne()`, `updateOne()`, `deleteOne()`, and the aggregation pipeline stages like `$match`, `$project`, and `$group`.
+
+If you're looking for something more specific (like methods for handling large-scale data, data replication, or real-time data streaming), MongoDB offers additional features for those scenarios.
+
+Let me know if you'd like more details on any specific methods or advanced features!
+
+
+greter than equals
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({gpa:{$gte:8.7}},{_id:false,name:true}).forEach(doc=>print(doc.name))
+Meera Desai
+Simran Kaur
+Priya Nair
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+logical operator evaluate expressions and return data base on they are true or false
+logical operators take array as arg not object like set or exists
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({$and:[{age:{$gte:20}},{gpa:{$gte:8.7}}]})
+[
+  {
+    _id: 2,
+    name: 'Meera Desai',
+    age: 21,
+    department: 'Information Technology',
+    gpa: 9.1,
+    skills: [ 'JavaScript', 'React', 'MongoDB' ],
+    isPlaced: true,
+    grad_year: 2026
+  },
+  {
+    _id: 4,
+    name: 'Simran Kaur',
+    age: 22,
+    department: 'Computer Science',
+    gpa: 9.4,
+    skills: [ 'Python', 'Machine Learning', 'MongoDB' ],
+    isPlaced: true,
+    grad_year: 2026
+  },
+  {
+    _id: 6,
+    name: 'Priya Nair',
+    age: 21,
+    department: 'Computer Science',
+    gpa: 8.7,
+    skills: [ 'HTML', 'CSS', 'JavaScript' ],
+    isPlaced: true,
+    grad_year: 2026
+  }
+]
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+we put 2 expression in and in the array that we passed as an argument 1st expression was to get docs with age gte 20 and 2nd was gpa gte 8,7
+
+there are many like or nor and much more working is basically the samw
+
+
+indexes allows quick lookup but takes a lot of memory and Cpu time
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({gpa:{$gte:9.0}},{_id:false,name:true}).forEach(doc=>print(doc.name)).explain("executionStats")
+Meera Desai
+Simran Kaur
+TypeError: Cannot read properties of undefined (reading 'explain')
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.find({gpa: {$gte: 9.0}}, {_id: false, name: true}).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'kedar.kedar',
+    parsedQuery: { gpa: { '$gte': 9 } },
+    indexFilterSet: false,
+    queryHash: '0CEEE085',
+    planCacheShapeHash: '0CEEE085',
+    planCacheKey: '871CFB21',
+    optimizationTimeMillis: 0,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'PROJECTION_SIMPLE',
+      transformBy: { _id: false, name: true },
+      inputStage: {
+        stage: 'COLLSCAN',
+        filter: { gpa: { '$gte': 9 } },
+        direction: 'forward'
+      }
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 2,
+    executionTimeMillis: 0,
+    totalKeysExamined: 0,
+    totalDocsExamined: 5,
+    executionStages: {
+      isCached: false,
+      stage: 'PROJECTION_SIMPLE',
+      nReturned: 2,
+      executionTimeMillisEstimate: 0,
+      works: 6,
+      advanced: 2,
+      needTime: 3,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      transformBy: { _id: false, name: true },
+      inputStage: {
+        stage: 'COLLSCAN',
+        filter: { gpa: { '$gte': 9 } },
+        nReturned: 2,
+        executionTimeMillisEstimate: 0,
+        works: 6,
+        advanced: 2,
+        needTime: 3,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        direction: 'forward',
+        docsExamined: 5
+      }
+    }
+  },
+  queryShapeHash: '7C39BE1CCA9973EB238FD623DC2CF80BFE6D8F4CEE57FFCBB4A9EF7EBF1D41AC',
+  command: {
+    find: 'kedar',
+    filter: { gpa: { '$gte': 9 } },
+    projection: { _id: false, name: true },
+    '$db': 'kedar'
+  },
+  serverInfo: {
+    host: 'ac-5highup-shard-00-01.ats1f4y.mongodb.net',
+    port: 27017,
+    version: '8.0.8',
+    gitVersion: '7f52660c14217ed2c8d3240f823a2291a4fe6abd'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 16793600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 33554432,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1746283984, i: 3 }),
+    signature: {
+      hash: Binary.createFromBase64('tZdOxHcNHMlAH7IPYPYyfPrWgS8=', 0),
+      keyId: Long('7476758495707004933')
+    }
+  },
+  operationTime: Timestamp({ t: 1746283984, i: 3 })
+}
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+The explain("executionStats") method in MongoDB provides detailed information about how the query was executed, 
+including the performance metrics and execution details of the query. It's particularly useful for analyzing and optimizing queries.
+
+
+
+explain() method in MongoDB can accept different modes, each providing varying levels of detail regarding the query execution. Here are the main modes you can use with explain():
+
+1. "queryPlanner" (default)
+This is the default mode and provides a high-level overview of the query plan.
+
+It shows the query planner’s analysis, including the winning plan (how MongoDB decided to execute the query), the indexes that could be used, and the stages of the execution plan.
+
+It does not include detailed performance statistics like execution time or the number of documents examined.
+
+Example:
+
+javascript
+Copy
+Edit
+db.kedar.find({gpa: {$gte: 9.0}}).explain("queryPlanner")
+Output (simplified):
+
+json
+Copy
+Edit
+{
+  "queryPlanner": {
+    "plannerVersion": 1,
+    "namespace": "mydb.kedar",
+    "parsedQuery": { "gpa": { "$gte": 9.0 } },
+    "winningPlan": {
+      "stage": "IXSCAN",
+      "keyPattern": { "gpa": 1 },
+      "indexName": "gpa_1",
+      "indexBounds": { "gpa": ["[9.0, 9.0]"] }
+    }
+  }
+}
+2. "executionStats"
+As you’ve already seen, this mode provides detailed execution statistics, including the query planner details along with actual execution statistics like the time taken, number of documents examined, and whether indexes were used.
+
+It's useful for analyzing the query's efficiency and performance.
+
+Example:
+
+javascript
+Copy
+Edit
+db.kedar.find({gpa: {$gte: 9.0}}).explain("executionStats")
+Output (simplified):
+
+json
+Copy
+Edit
+{
+  "executionStats": {
+    "executionTimeMillis": 2,
+    "nReturned": 3,
+    "totalDocsExamined": 5,
+    "totalKeysExamined": 5,
+    "winningPlan": {
+      "stage": "IXSCAN",
+      "keyPattern": { "gpa": 1 },
+      "indexName": "gpa_1",
+      "indexBounds": { "gpa": ["[9.0, 9.0]"] }
+    }
+  }
+}
+3. "allPlansExecution"
+This mode provides the most detailed execution information, including statistics for all query plans considered by the query planner, not just the winning plan.
+
+It includes the same detailed execution stats as "executionStats" but also provides a comparison of different query plans, making it helpful when you want to understand why MongoDB chose a particular execution plan over others.
+
+Example:
+
+javascript
+Copy
+Edit
+db.kedar.find({gpa: {$gte: 9.0}}).explain("allPlansExecution")
+Output (simplified):
+
+json
+Copy
+Edit
+{
+  "allPlansExecution": [
+    {
+      "stage": "IXSCAN",
+      "keyPattern": { "gpa": 1 },
+      "indexName": "gpa_1",
+      "indexBounds": { "gpa": ["[9.0, 9.0]"] },
+      "executionStats": {
+        "executionTimeMillis": 2,
+        "nReturned": 3,
+        "totalDocsExamined": 5,
+        "totalKeysExamined": 5
+      }
+    },
+    {
+      "stage": "COLLSCAN",
+      "executionStats": {
+        "executionTimeMillis": 5,
+        "nReturned": 3,
+        "totalDocsExamined": 1000
+      }
+    }
+  ]
+}
+In this example, MongoDB considered two plans: an index scan (IXSCAN) and a collection scan (COLLSCAN). The "allPlansExecution" mode allows you to see both plans and their respective statistics.
+
+Summary of explain() Modes:
+"queryPlanner": High-level query planning details, including the winning plan.
+
+"executionStats": Detailed execution statistics, including time, documents examined, and performance metrics.
+
+"allPlansExecution": Most detailed execution stats, including information on all query plans considered.
+
+You can choose the appropriate mode based on the level of detail you need for your query optimization or analysis.
+
+
+name: 1 means the index sorts name values in ascending order (A → Z).
+
+The response "name_1" is the default name MongoDB gives to the index. It combines the field name and sort direction.
+
+Why this is useful:
+Faster Queries on name:
+
+Queries like find({name: "Meera Desai"}) will now be much faster because MongoDB can use the index instead of scanning the whole collection (COLLSCAN).
+
+Improved Sorting:
+
+Queries like find().sort({name: 1}) will also be optimized using this index.
+
+Index-Based Operations:
+
+MongoDB can now use this index to evaluate filter conditions or sort operations without scanning every document.
+
+Creating indexes on name allows us to examine documents on name
+
+Great question! Let's break down **how creating an index improves efficiency** in a database like **MongoDB** (or any modern database).
+
+---
+
+### 🔍 Without an Index: **Collection Scan**
+
+When you run:
+
+```javascript
+db.users.find({ name: "Alice" })
+```
+
+and **no index exists** on `name`, MongoDB performs a **collection scan**:
+
+* It goes through **every document** in the collection.
+* Checks if the `name` field is `"Alice"`.
+* Very **slow** if the collection has **millions of documents**.
+
+---
+
+### ⚡ With an Index on `name`:
+
+```javascript
+db.users.createIndex({ name: 1 })
+```
+
+Now when you run the same query:
+
+```javascript
+db.users.find({ name: "Alice" })
+```
+
+MongoDB can:
+
+* **Go directly to a sorted, lightweight data structure** (B-tree index).
+* **Quickly locate** all entries where `name` is `"Alice"`.
+* Skip scanning irrelevant documents.
+
+It’s similar to looking up a word in a **dictionary** vs reading the entire book.
+
+---
+
+### 📊 Real-world Speedup:
+
+Imagine a collection of 1 million documents:
+
+* 🔍 Without index: MongoDB may examine all 1,000,000 documents.
+* ⚡ With index: MongoDB may examine just a handful (\~10–100) depending on the index structure.
+
+---
+
+### 🔧 Internally (B-tree Index):
+
+* MongoDB stores index values in a **balanced B-tree**.
+* Searching in a B-tree is **logarithmic time** (`O(log n)`), compared to linear (`O(n)`) in a full scan.
+* That’s a **huge speedup** for large datasets.
+
+---
+
+### Summary:
+
+✅ Indexes improve **query performance** by:
+
+1. Avoiding full collection scans.
+2. Enabling fast search using B-tree traversal.
+3. Supporting efficient sorting, range queries, and even uniqueness enforcement.
+
+Would you like a visual example or small dataset demo to see this in action?
+
+
+Idex is defalut on _id to get we use getIndexes
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { name: 1 }, name: 'name_1' }
+]
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+
+to drop an index
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.dropIndex("name_1")
+{
+  nIndexesWas: 2,
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1746284362, i: 5 }),
+    signature: {
+      hash: Binary.createFromBase64('IPqchr6E/RAkXZBkbVhQkidWo/g=', 0),
+      keyId: Long('7476758495707004933')
+    }
+  },
+  operationTime: Timestamp({ t: 1746284362, i: 5 })
+}
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.getIndexes()
+[ { v: 2, key: { _id: 1 }, name: '_id_' } ]
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+
+use indexes if we are seraching and not updating if indexesd are created updation will become problamatic
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.createCollection("KEdar_1",{capped:true,size:100000000,max:100})
+{ ok: 1 }
+there are variuos arguments
+
+
+Atlas atlas-sbkflh-shard-0 [primary] kedar> db.kedar.drop()
+true
+Atlas atlas-sbkflh-shard-0 [primary] kedar>
+
+
+to drop a collection
